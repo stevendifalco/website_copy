@@ -30,7 +30,7 @@ education:
   - course: MS in Natural Resources
     institution: University of Connecticut
     year: 2020
-    logo = "/uconn-logo.png"
+    logo: "/uconn-logo.png"
   - course: BS in Biology
     institution: State University of New York at New Paltz
     year: 2013
