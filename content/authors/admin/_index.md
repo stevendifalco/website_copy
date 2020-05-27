@@ -10,7 +10,7 @@ authors:
 superuser: true
 
 # Role/position
-role: Graduate Student
+role: Landscape Ecologist and Geographer
 
 # Organizations/Affiliations
 organizations:
@@ -18,19 +18,18 @@ organizations:
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include botany, geography, human dimensions and landscape ecology.
+bio: My research interests include botany, geography, human dimensions, and landscape ecology.
 
 interests:
-- Geography
-- Landscape Ecology
-- 
+- Interaction between humans and the environment 
+- Invasive species 
+
 
 education:
   courses:
   - course: MS in Natural Resources
     institution: University of Connecticut
     year: 2020
-    logo: "/uconn-logo.png"
   - course: BS in Biology
     institution: State University of New York at New Paltz
     year: 2013
