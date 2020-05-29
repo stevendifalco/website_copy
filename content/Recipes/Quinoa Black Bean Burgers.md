@@ -1,10 +1,12 @@
 ---
-title: First Post
+title: Quinoa Black Bean Burgers
 author: Steven DiFalco
 date: '2020-05-28'
 slug: Quinoa Black Bean Burgers
 categories:
-  - dinner quinoa black bean
+  - dinner 
+  - quinoa 
+  - black bean
 tags:
   - recipes
 ---
