@@ -22,8 +22,8 @@ subtitle = ""
   filter_default = 0
   
   [[content.filter_button]]
-    name = "All"
-    tag = "*"
+    name = "Mansfield"
+    tag = "Mansfield Trails"
   
    [[content.filter_button]]
     name = "Post"
