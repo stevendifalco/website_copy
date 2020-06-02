@@ -22,16 +22,16 @@ subtitle = ""
   filter_default = 0
   
   [[content.filter_button]]
-    name = "Mansfield"
-    tag = "Mansfield"
+    name = "All"
+    tag = "*"
   
    [[content.filter_button]]
-    name = "Post"
-    tag = "post"
+    name = "Mapping"
+    tag = "mapping"
   
    [[content.filter_button]]
-    name = "Other"
-    tag = "Demo"
+    name = "Data Visualizations"
+    tag = "data visualizations"
 
 [design]
   # Choose how many columns the section has. Valid values: 1 or 2.
