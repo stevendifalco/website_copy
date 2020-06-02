@@ -12,7 +12,7 @@ date: "2020-06-02"
 external_link: ""
 
 image:
-  caption: Screenshot of mapper
+  caption: 
   focal_point: Smart
 
 links:
