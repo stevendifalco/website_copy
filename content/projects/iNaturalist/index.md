@@ -3,7 +3,7 @@ title: Other Projects
 summary: Examples of other projects using Python for a mapping project and iNaturalist data.
 tags:
 - inatrualist
-- data visulizations
+- data visualizations
 - python
 - jypter notebook
 date: "2020-06-02"

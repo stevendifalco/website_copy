@@ -48,7 +48,7 @@ social:
   link: https://twitter.com/stevendifalco
 - icon: linkedin
   icon_pack: fab
-  link: https://linkedin.com/stevendifalco
+  link: https://linkedin.com/in/stevendifalco
 - icon: github
   icon_pack: fab
   link: https://github.com/stevendifalco
