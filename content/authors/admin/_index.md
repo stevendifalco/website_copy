@@ -21,7 +21,8 @@ organizations:
 bio: My research interests include botany, geography, human dimensions, and landscape ecology.
 
 interests:
-- Interaction between humans and the environment 
+- Map making and spatial analysis  
+- Studying human-ecosystem interactions  
 - Invasive species 
 
 
@@ -45,6 +46,9 @@ social:
 - icon: twitter
   icon_pack: fab
   link: https://twitter.com/stevendifalco
+- icon: linkedin
+  icon_pack: fab
+  link: https://linkedin.com/stevendifalco
 - icon: github
   icon_pack: fab
   link: https://github.com/stevendifalco

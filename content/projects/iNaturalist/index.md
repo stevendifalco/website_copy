@@ -1,6 +1,6 @@
 ---
 title: Other Projects
-summary: 
+summary: Examples of other projects using Python for a mapping project and iNaturalist data.
 tags:
 - inatrualist
 - data visulizations

@@ -19,13 +19,13 @@
   weight = 30
 
 [[main]]
-  name = "Contact"
-  url = "#contact"
+  name = "Recipes"
+  url = "recipes"
   weight = 40
 
 [[main]]
-  name = "Recipes"
-  url = "recipes"
+  name = "Contact"
+  url = "#contact"
   weight = 50
 
 # Link to a PDF of your resume/CV from the menu.
