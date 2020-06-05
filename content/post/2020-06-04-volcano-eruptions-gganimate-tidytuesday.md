@@ -79,4 +79,4 @@ animate(animate, renderer = gifski_renderer("volcanobyyear.gif"))
 
 ```
 
-![Volcano eruption by Year gif](/content/post/2020-06-04/volcanobyyear.gif)
+![Volcano eruption by Year gif](/post/2020-06-04/volcanobyyear.gif)
