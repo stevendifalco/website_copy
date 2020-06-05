@@ -35,10 +35,10 @@ Lets take a look at the data first and see what information is here.
 
     eruption_list <- eruptions %>% 
       janitor::clean_names() %>% 
-      select(-contains("modifier"), -contains("uncertainty")) %>%
-      filter(eruption_category == "Confirmed Eruption") %>%
-      drop_na(end_year) %>%
-      filter(end_year > 2010)
+      select(-contains("modifier"), -contains("uncertainty")) %>% 
+      filter(eruption_category == "Confirmed Eruption") %>% #only confirmed volcanoes stay in data
+      drop_na(end_year) %>% #drops those without end year
+      filter(end_year > 2010) #filters only volcanoes after 2010
 
     datatable(eruption_list, rownames = FALSE,
               options = list(pageLength = 5))
@@ -59,8 +59,8 @@ Next, I’ll create an underlying map for plotting the points.
 
     map
 
-![](2020-06-04-volcano-eruptions-gganimate-tidytuesday_files/figure-markdown_strict/unnamed-chunk-3-1.png)
+![All Volcanos 2010-2020](2020-06-04-volcano-eruptions-gganimate-tidytuesday_files/figure-markdown_strict/unnamed-chunk-3-1.png)
 
 Now let’s animate! I did not realize going into this that the points would ‘move’ from year to year instead of appearing for that year then disappear. Something to consider for the next time I use this package.
 
-<img src="volcanobyyear.gif" alt="animation"/>
+![Volcanoe by Year gif](volcanobyyear.gif)
