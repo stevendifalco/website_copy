@@ -59,8 +59,8 @@ Next, I’ll create an underlying map for plotting the points.
 
     map
 
-![All Volcanos 2010-2020](2020-06-04-volcano-eruptions-gganimate-tidytuesday_files/figure-markdown_strict/unnamed-chunk-3-1.png)
+![All Volcanoes 2012-2020](/post/2020-06-04-volcano-eruptions-gganimate-tidytuesday_files/figure-markdown_strict/unnamed-chunk-3-1.png)
 
 Now let’s animate! I did not realize going into this that the points would ‘move’ from year to year instead of appearing for that year then disappear. Something to consider for the next time I use this package.
 
-![Volcanoe by Year gif](volcanobyyear.gif)
+![Volcano eruption by Year gif](post/volcanobyyear.gif)
