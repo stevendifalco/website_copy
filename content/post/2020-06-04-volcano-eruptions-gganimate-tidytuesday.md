@@ -61,7 +61,7 @@ Next, I’ll create an underlying map for plotting the points.
     map
 ```
 
-![All Volcanoes 2012-2020](unnamed-chunk-3-1.png)
+![All Volcanoes 2012-2020](/2020-06-04/unnamed-chunk-3-1.png "volcanoes")
 
 Now let’s animate! I did not realize going into this that the points would ‘move’ from year to year instead of appearing for that year then disappear. Something to consider for the next time I use this package.
 
@@ -79,4 +79,4 @@ animate(animate, renderer = gifski_renderer("volcanobyyear.gif"))
 
 ```
 
-![Volcano eruption by Year gif](volcanobyyear.gif)
+![Volcano eruption by Year gif](/2020-06-04/volcanobyyear.gif "volcanos")
