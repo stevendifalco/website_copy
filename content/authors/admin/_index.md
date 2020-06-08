@@ -18,10 +18,11 @@ organizations:
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
-bio: My research interests include botany, geography, human dimensions, and landscape ecology.
+bio: My interests include botany, geography, human dimensions, and landscape ecology.
 
 interests:
-- Map making and spatial analysis  
+- Map making
+- Spatial analysis
 - Studying human-ecosystem interactions  
 - Invasive species 
 
@@ -52,6 +53,9 @@ social:
 - icon: github
   icon_pack: fab
   link: https://github.com/stevendifalco
+- icon: fa-envira
+  icon_pack: fab
+  link: https://www.inaturalist.org/observations/sdifalco
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
 # - icon: cv
@@ -67,8 +71,10 @@ user_groups:
 - Researchers
 ---
 
-I am currently pursuing a master’s degree in Natural Resources at the University of Connecticut, where I am studying the human dimensions of roadside vegetation management. My research project involved a survey mailed to residents of Connecticut, to understand public perceptions and opinons towards roadside tree management. I used spatial analysis to evaluate how attitudes vary spatially. While at UConn, I have honed my skills in ArcGIS/ArcOnline and developed an understanding of statistical softwares such as R, Python, and SPSS.
+I am currently pursuing a master’s degree in Natural Resources at the University of Connecticut, where I am studying the human dimensions of roadside vegetation management. My research project involved a survey mailed to residents of Connecticut, to understand public perceptions and opinons towards tree management. I used spatial analysis to evaluate how attitudes vary spatially. I am interested in the interaction between humans and natural resources, and how this shapes their approval of management decisions. While at UConn, I have honed my skills in ArcGIS/ArcOnline and developed an understanding of statistical softwares such as R, Python, and SPSS.
 
-Before starting my master's, I worked in invasive plant management and native habitat restoration for five years, holding positions at city, state, and non-profit organizations in New York. 
+For five years, I worked as a natural resource specialist to restore native ecosystems through invasive plant management. I focused on restoring forests and fields to their native composition. I collected and propogated native plants to aid in this process, and return locally extripated species. I am interested in the way exotic invasive species affect local ecosystems, and best management practices to mitigate their impacts. One of the most important parts of land management is the reestablishment of native plant populations. Restoring and maintaining native plant populations is important for helping provide habitat for our native pollinators 
 
-I received my bachelor’s degree from the State University of New York at New Paltz in Biology. During my time at SUNY New Paltz, I studied spatial temporal variability of water quality in an anthropogenically affected river and the effects of soil characteristics on invasive plant success. 
+[Interview with Naturally@UConn](https://naturally.uconn.edu/2019/06/26/meet-graduate-student-steven-difalco/#)
+
+

@@ -5,7 +5,7 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 50  # Order that this section will appear.
 
-title = "Experience"
+title = "Selected Experiences"
 subtitle = ""
 
 # Date format for experience
@@ -26,7 +26,6 @@ date_format = "Jan 2006"
   date_end = ""
   description = """
   Responsibilities include:
-  
   * Planned and conducted research pertaining to socioecological research on attitudes of residents towards roadside vegetation management practices
   * Integrated human dimensions, landscape ecology, and spatial analysis to analyze data
   * Supervised 10 research technicians in survey data entry, mapping, and data analysis
@@ -37,8 +36,8 @@ date_format = "Jan 2006"
   company = "Rockefeller State Park Preserve"
   company_url = ""
   location = "Pleasantville, NY"
-  date_start = "2015-04-01"
-  date_end = "2017-12-31"
+  date_start = "2016-04-01"
+  date_end = "2018-01-01"
   description = """
   Responsibilities included:
   * Coordinated and implemented restoration of natural areas through invasive species management, reestablishing native plant populations, and mitigating soil erosion
@@ -46,5 +45,19 @@ date_format = "Jan 2006"
   * Recruited and supervised natural resource stewards, interns, and volunteers
   * Managed restoration budget for plant materials and invasive herbicide contracts 
   * Partnered with local and state organizations to advance ecological restoration"""
+
+[[experience]]
+  title = "Forest Ecologist"
+  company = "Prospect Park Alliance"
+  company_url = ""
+  location = "Brooklyn, NY"
+  date_start = "2014-07-01"
+  date_end = "2016-03-31"
+  description = """
+  Responsibilities included:
+  * Prioritized management and restoration of invasive plant infestations using herbicides
+  * Conducted long-term vegetation monitoring and data analysis for reports
+  * Coordinated, hired, and supervised the natural resource internship program 
+  * Organized and oversaw frequent volunteer projects and plant identification tours """
 
 +++
