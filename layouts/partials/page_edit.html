@@ -1,0 +1,10 @@
+{{ if site.Params.edit_page }}{{/* Make `edit_page` optional in `params.toml` - prevent errors if it's removed. */}}
+{{ if site.Params.edit_page.repo_url | and (index site.Params.edit_page.editable .Type) | and (ne .Params.editable false) | or .Params.editable }}
+{{ $Rmd := (print .File.Dir .File.BaseFileName ".Rmd") }}
+<p class="edit-page">
+  <a href="{{site.Params.edit_page.repo_url}}/blob/{{site.Params.edit_page.repo_branch | default "master"}}/content/{{$Rmd}}">
+    <i class="fas fa-pen pr-2"></i>{{ "Download of verander dit tech report!" }}
+  </a>
+</p>
+{{ end }}
+{{ end }}
