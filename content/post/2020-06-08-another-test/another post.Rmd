@@ -2,6 +2,7 @@
 title: Test Post
 author: Steven DiFalco
 date: '2020-06-08'
+draft: false
 slug: []
 categories:
   - posts

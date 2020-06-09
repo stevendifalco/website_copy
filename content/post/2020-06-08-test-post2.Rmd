@@ -2,7 +2,8 @@
 title: Test Post
 author: Steven DiFalco
 date: '2020-06-08'
-slug: []
+draft: false
+slug:
 categories:
   - posts
 tags:
