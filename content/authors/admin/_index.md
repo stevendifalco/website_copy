@@ -53,7 +53,7 @@ social:
 - icon: github
   icon_pack: fab
   link: https://github.com/stevendifalco
-- icon: envira
+- icon: fa-envira
   icon_pack: fa
   link: https://www.inaturalist.org/observations/sdifalco
 # Link to a PDF of your resume/CV from the About widget.
