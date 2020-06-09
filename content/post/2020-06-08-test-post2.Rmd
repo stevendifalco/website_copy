@@ -1,14 +1,27 @@
 ---
-title: Test Post
-author: Steven DiFalco
+title: "Test Post"
+author: "Steven DiFalco"
 date: '2020-06-08'
-draft: false
-slug:
-categories:
-  - posts
-tags:
-  - data visualizations
+output:
+  html_document:
+    df_print: paged
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+lastmod: ''
+categories: posts
+params:
+  filepath: /post
+projects: []
+slug: test-post
+subtitle: ''
+summary: ''
+tags: data visualizations
+authors: []
 ---
+
 
 ```{r}
 
