@@ -56,6 +56,7 @@ social:
 - icon: envira
   icon_pack: fab
   link: https://www.inaturalist.org/observations/sdifalco
+  
 # Link to a PDF of your resume/CV from the About widget.
 # To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
 # - icon: cv
@@ -67,8 +68,8 @@ email: ""
 
 # Organizational groups that you belong to (for People widget)
 #   Set this to `[]` or comment out if you are not using People widget.
-user_groups:
-- Researchers
+#user_groups:
+
 ---
 
 I am currently pursuing a master’s degree in Natural Resources at the University of Connecticut, where I am studying the human dimensions of roadside vegetation management. My research project involved a survey mailed to residents of Connecticut, to understand public perceptions and opinons towards tree management. I used spatial analysis to evaluate how attitudes vary spatially. I am interested in the interaction between humans and natural resources, and how this shapes their approval of management decisions. While at UConn, I have honed my skills in ArcGIS/ArcOnline and developed an understanding of statistical softwares such as R, Python, and SPSS.
