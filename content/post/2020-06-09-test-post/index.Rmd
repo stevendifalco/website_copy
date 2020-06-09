@@ -17,6 +17,7 @@ image:
   caption: ''
   focal_point: ''
   preview_only: no
+<<<<<<< HEAD
 projects: [mapping]
 ---
 
@@ -32,3 +33,7 @@ plot <- ggplot(data = data, aes(x = Sepal.Width, y= Sepal.Length))+
 plot
 
 ```
+=======
+projects: []
+---
+>>>>>>> 9ad354ceac544a0a50d9e3e6f89d96824608dc2a
