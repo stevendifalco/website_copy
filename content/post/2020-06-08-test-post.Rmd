@@ -9,3 +9,72 @@ tags:
 ---
 
 #Test post for markdown documents
+
+```{r}
+
+library(tidyverse)
+library(maps)
+library(viridis)
+library(grid)
+library(ggplot2)
+library(mapproj)
+
+
+#Modes of travling biking and walking ACS data
+commute_mode <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-11-05/commute.csv")
+
+
+commute_mode$state <- recode(commute_mode$state, 
+                       "Ca"= "California",
+                       "Massachusett" = "Massachusetts")
+
+
+#summarise data each state for percent biking and walking
+commute_summary <- commute_mode %>%
+  mutate(state = tolower(state)) %>%
+  group_by(state, mode) %>%
+  summarise(Percent = mean(percent))
+
+#retrieve state geo data
+states_map <- map_data("state")
+
+#filter by Northeastern States
+NE_states <- subset(states_map, region %in% c("connecticut", "massachusetts","maine", "new hampshire", 
+                                          "new york", "rhode island", "vermont"))
+#plot by new england states
+commute_summary %>%
+  ggplot(aes(map_id = state)) +
+  geom_map(aes(fill=Percent), map = NE_states)+ #sets up map
+  facet_wrap(vars(mode)) + #displays both bike and walk on same figure
+  expand_limits(x= NE_states$long, y=NE_states$lat)+ #sets limits based on lat/long of states file
+  coord_map("polyconic") +
+  scale_fill_viridis(option = "D") +
+  theme_void()+ #gets rid of xy grid
+  labs(fill = "Percent of commuters", title= "The Northeast Loves Walking")+
+  theme(legend.position="bottom", plot.title = element_text(hjust =0.5), 
+        strip.text.x = element_text(size = 12))#changes text of mode
+
+commute_summary
+```
+
+
+```{r echo=FALSE, fig.cap=c("Crew 2016","Crew out in lake","Crew 2017", "Planting native plants after invasive removal in 2017", "Growth of natives in same site as above in 2019", "Spotted frittillary on spotted joepye", "Flame treating barberry stumps in 2017", "Bluebird eggs found in nest while monitoring boxes 2016"), out.extra="padding:10px", out.width="500px", fig.align="center"}
+
+knitr::include_graphics("/static/img/Crew16.jpg")
+
+knitr::include_graphics("/img/CrewBoat.jpg")
+
+knitr::include_graphics("images/Crew17.jpg")
+
+knitr::include_graphics("images/treeplanting2.jpg")
+
+knitr::include_graphics("images/treeplanting3.jpg")
+
+knitr::include_graphics("images/joepye.jpg")
+
+knitr::include_graphics("images/flame.jpeg")
+
+knitr::include_graphics("images/bluebirds.jpg")
+
+
+```
