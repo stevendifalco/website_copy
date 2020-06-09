@@ -9,20 +9,17 @@ tags:
   - post
 subtitle: ''
 summary: ''
-authors: []
+authors: [steven]
 lastmod: '2020-06-09T11:04:31-04:00'
 featured: no
 disable_jquery: no
 image:
   caption: ''
   focal_point: ''
-  preview_only: no
-<<<<<<< HEAD
 projects: [mapping]
 ---
 
-
-```{r}
+```{r include=FALSE}
 library(tidyverse)
 
 data <- iris
@@ -30,10 +27,9 @@ data <- iris
 plot <- ggplot(data = data, aes(x = Sepal.Width, y= Sepal.Length))+
   geom_point(aes(color=Species))
 
+```
+
+```{r}
 plot
 
 ```
-=======
-projects: []
----
->>>>>>> 9ad354ceac544a0a50d9e3e6f89d96824608dc2a
