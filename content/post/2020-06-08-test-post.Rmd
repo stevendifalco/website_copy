@@ -1,11 +1,10 @@
 ---
-title: Test post
-author: 'Steven DiFalco'
+title: "Test post"
+author: "Steven DiFalco"
 date: '2020-06-08'
 slug: test-post
-categories: [posts]
-tags:
-  - data visualizations
+tags: data visualizations
+categories: posts
 ---
 
 #Test post for markdown documents
@@ -57,24 +56,3 @@ commute_summary %>%
 commute_summary
 ```
 
-
-```{r echo=FALSE, fig.cap=c("Crew 2016","Crew out in lake","Crew 2017", "Planting native plants after invasive removal in 2017", "Growth of natives in same site as above in 2019", "Spotted frittillary on spotted joepye", "Flame treating barberry stumps in 2017", "Bluebird eggs found in nest while monitoring boxes 2016"), out.extra="padding:10px", out.width="500px", fig.align="center"}
-
-knitr::include_graphics("/static/img/Crew16.jpg")
-
-knitr::include_graphics("/img/CrewBoat.jpg")
-
-knitr::include_graphics("images/Crew17.jpg")
-
-knitr::include_graphics("images/treeplanting2.jpg")
-
-knitr::include_graphics("images/treeplanting3.jpg")
-
-knitr::include_graphics("images/joepye.jpg")
-
-knitr::include_graphics("images/flame.jpeg")
-
-knitr::include_graphics("images/bluebirds.jpg")
-
-
-```
