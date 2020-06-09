@@ -1,0 +1,105 @@
+---
+title: NYC Urban Ranger Animal Response
+author: Steven DiFalco
+date: '2020-06-09'
+draft: True
+slug: nyc-urban-ranger-animal-response
+categories:
+  - post
+  - data visualization
+tags:
+  - data visualizations
+  - R
+subtitle: ''
+summary: ''
+authors: [Steven]
+lastmod: '2020-06-09T15:35:05-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: [Other]
+---
+
+
+
+<div id="i-came-across-this-dataset-from-nyc-from-urban-park-ranger-animal-condition-response-source-httpsdata.cityofnewyork.usenvironmenturban-park-ranger-animal-condition-responsefuhs-xmg2.-from-may-2018---june-2019-data-was-collected-on-animal-calls-received-by-the-urban-park-rangers-of-new-york-city.-most-of-these-reports-would-be-associated-with-city-parks-for-animals-in-distress." class="section level2">
+<h2>I came across this dataset from NYC from Urban Park Ranger Animal Condition Response [source] (<a href="https://data.cityofnewyork.us/Environment/Urban-Park-Ranger-Animal-Condition-Response/fuhs-xmg2" class="uri">https://data.cityofnewyork.us/Environment/Urban-Park-Ranger-Animal-Condition-Response/fuhs-xmg2</a>). From May 2018 - June 2019, data was collected on animal calls received by the Urban Park Rangers of New York City. Most of these reports would be associated with city parks for animals in distress.</h2>
+<div id="lets-take-a-look-at-the-data-and-see-what-types-of-animals-have-appeared-in-nyc" class="section level3">
+<h3>Let’s take a look at the data and see what types of animals have appeared in NYC!</h3>
+<pre class="r"><code>data_raw &lt;- read.csv(&quot;Urban_Park_Ranger_Animal_Condition_Response.csv&quot;)
+
+#Animal by species
+head(data_raw %&gt;% count(Species.Description, sort =T))</code></pre>
+<pre><code>##   Species.Description   n
+## 1             Raccoon 497
+## 2             raccoon  64
+## 3        Canada Goose  37
+## 4             Chicken  26
+## 5     Red-tailed Hawk  25
+## 6             Opossum  17</code></pre>
+<pre class="r"><code>#Animal by classification
+head(data_raw %&gt;% count(Animal.Class, sort =T))</code></pre>
+<pre><code>##                       Animal.Class   n
+## 1                Small Mammals-RVS 582
+## 2                            Birds 166
+## 3                         Domestic  57
+## 4                          Raptors  54
+## 5            Small Mammals-non RVS  49
+## 6 Terrestrial Reptile or Amphibian  21</code></pre>
+</div>
+<div id="clearly-a-lot-of-calls-for-raccoons-unfortunately-this-dataset-does-not-include-the-reason-for-the-call-besides-healthy-unhealthy-dead-on-arrival-doa.-there-is-some-cleaning-needed-when-looking-at-the-classifications.-looking-at-marine-reptiles-shows-theyre-actually-terrestrial-reptiles.-lets-do-some-cleaning." class="section level3">
+<h3>Clearly, a lot of calls for raccoons! Unfortunately, this dataset does not include the reason for the call besides <code>healthy, unhealthy, dead on arrival (DOA)</code>. There is some cleaning needed when looking at the classifications. Looking at <code>$Marine Reptiles</code> shows they’re actually <code>$Terrestrial Reptiles</code>. Let’s do some cleaning.</h3>
+<pre class="r"><code>data_clean &lt;- data_raw %&gt;%
+  mutate(
+    Species.Description = str_to_lower(Species.Description), #removes capitializations
+    Species.Description = str_replace_all(Species.Description, &quot;-&quot;, &quot; &quot;), #removes dashes
+    Animal.Class = str_to_lower(Animal.Class),
+    Animal.Class = case_when(
+      str_detect(Animal.Class, &quot;marine reptiles&quot;) ~ &quot;terrestrial reptile or amphibian&quot;, #moving turtles to correct category
+      str_detect(Animal.Class, &quot;marine mammals&quot;) ~ &quot;marine mammals&quot;,
+      str_detect(Animal.Class, &quot;domestic&quot;) ~ &quot;domestic&quot;,
+      str_detect(Animal.Class, &quot;raptors&quot;) ~ &quot;raptors&quot;,
+      str_detect(Animal.Class, &quot;fish&quot;) ~ &quot;fish&quot;,
+      TRUE ~ Animal.Class),
+    Species.Description = case_when(
+      str_detect(Species.Description, &quot;squirrel&quot;) ~ &quot;squirrel&quot;, #more examples of this but this was most obvious
+      TRUE ~ Species.Description
+    )
+  )
+
+#Grouping by species for top 20 most abundant species
+species &lt;- data_clean %&gt;%
+  count(Species.Description, sort = TRUE) %&gt;%
+  top_n(20) </code></pre>
+<pre><code>## Selecting by n</code></pre>
+<pre class="r"><code>#Creating dataframe of just
+class &lt;- data_clean %&gt;%
+  count(Animal.Class, sort = TRUE)</code></pre>
+</div>
+<div id="overall-this-is-much-better-now-and-solved-some-issues.-i-consolidated-the-animal.class-category-to-make-further-analysis-easier-but-recognize-this-may-have-over-simplified-some-details.-there-are-some-cases-when-some-species-are-labelled-different-ways.-well-leave-this-for-now." class="section level3">
+<h3>Overall, this is much better now and solved some issues. I consolidated the <code>Animal.Class</code> category to make further analysis easier, but recognize this may have over simplified some details. There are some cases when some species are labelled different ways. We’ll leave this for now.</h3>
+<pre class="r"><code>#Species count
+plot &lt;- ggplot(data = species, aes(x= reorder(Species.Description, n), y = n)) + #reorder makes bars descending order
+  geom_bar(stat = &quot;identity&quot;) + #allows for the count to be plotted
+  coord_flip() + #rotates graph
+  ylab(&quot;Count&quot;)+
+  xlab(&quot;Species&quot;)+ 
+  theme_minimal() #introduces a theme to the figure instead of the standard output
+
+plot</code></pre>
+<p><img src="/post/2020-06-09-nyc-urban-ranger-animal-response/index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>plot2 &lt;- data_clean %&gt;%
+  group_by(Species.Description) %&gt;%
+  count(Species.Description, Borough, sort = TRUE) %&gt;% top_n(20) %&gt;%
+  mutate(species = fct_infreq(Species.Description))%&gt;%
+  ggplot(aes(x= species, y = n)) + #reorder makes bars descending order
+  geom_bar(stat = &quot;identity&quot;) + #allows for the count to be plotted
+  theme_minimal()+ #introduces a theme to the figure instead of the standard output
+  facet_wrap(~Borough, nrow=1)</code></pre>
+<pre><code>## Selecting by n</code></pre>
+<pre class="r"><code>plot2</code></pre>
+<p><img src="/post/2020-06-09-nyc-urban-ranger-animal-response/index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+</div>

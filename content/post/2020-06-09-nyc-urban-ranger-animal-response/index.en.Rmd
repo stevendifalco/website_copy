@@ -1,0 +1,110 @@
+---
+title: NYC Urban Ranger Animal Response
+author: Steven DiFalco
+date: '2020-06-09'
+draft: True
+slug: nyc-urban-ranger-animal-response
+categories:
+  - post
+  - data visualization
+tags:
+  - data visualizations
+  - R
+subtitle: ''
+summary: ''
+authors: [Steven]
+lastmod: '2020-06-09T15:35:05-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: [Other]
+---
+
+## I came across this dataset from NYC from Urban Park Ranger Animal Condition Response ![source] (https://data.cityofnewyork.us/Environment/Urban-Park-Ranger-Animal-Condition-Response/fuhs-xmg2). From May 2018 - June 2019, data was collected on animal calls received by the Urban Park Rangers of New York City. Most of these reports would be associated with city parks for animals in distress. 
+
+### Let's take a look at the data and see what types of animals have appeared in NYC!
+
+```{r include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(tidytext)
+```
+
+```{r echo=TRUE}
+
+data_raw <- read.csv("Urban_Park_Ranger_Animal_Condition_Response.csv")
+
+#Animal by species
+head(data_raw %>% count(Species.Description, sort =T))
+
+#Animal by classification
+head(data_raw %>% count(Animal.Class, sort =T))
+
+```
+
+### Clearly, a lot of calls for raccoons! Unfortunately, this dataset does not include the reason for the call besides `healthy, unhealthy, dead on arrival (DOA)`. There is some cleaning needed when looking at the classifications. Looking at `$Marine Reptiles` shows they're actually `$Terrestrial Reptiles`. Let's do some cleaning. 
+
+```{r echo=TRUE}
+
+data_clean <- data_raw %>%
+  mutate(
+    Species.Description = str_to_lower(Species.Description), #removes capitializations
+    Species.Description = str_replace_all(Species.Description, "-", " "), #removes dashes
+    Animal.Class = str_to_lower(Animal.Class),
+    Animal.Class = case_when(
+      str_detect(Animal.Class, "marine reptiles") ~ "terrestrial reptile or amphibian", #moving turtles to correct category
+      str_detect(Animal.Class, "marine mammals") ~ "marine mammals",
+      str_detect(Animal.Class, "domestic") ~ "domestic",
+      str_detect(Animal.Class, "raptors") ~ "raptors",
+      str_detect(Animal.Class, "fish") ~ "fish",
+      TRUE ~ Animal.Class),
+    Species.Description = case_when(
+      str_detect(Species.Description, "squirrel") ~ "squirrel", #more examples of this but this was most obvious
+      TRUE ~ Species.Description
+    )
+  )
+
+#Grouping by species for top 20 most abundant species
+species <- data_clean %>%
+  count(Species.Description, sort = TRUE) %>%
+  top_n(20) 
+
+#Creating dataframe of just
+class <- data_clean %>%
+  count(Animal.Class, sort = TRUE)
+
+
+
+```
+### Overall, this is much better now and solved some issues. I consolidated the `Animal.Class` category to make further analysis easier, but recognize this may have over simplified some details. There are some cases when some species are labelled different ways. We'll leave this for now. 
+
+```{r}
+
+#Species count
+plot <- ggplot(data = species, aes(x= reorder(Species.Description, n), y = n)) + #reorder makes bars descending order
+  geom_bar(stat = "identity") + #allows for the count to be plotted
+  coord_flip() + #rotates graph
+  ylab("Count")+
+  xlab("Species")+ 
+  theme_minimal() #introduces a theme to the figure instead of the standard output
+
+plot
+
+```
+
+```{r}
+
+plot2 <- data_clean %>%
+  group_by(Species.Description) %>%
+  count(Species.Description, Borough, sort = TRUE) %>% top_n(20) %>%
+  mutate(species = fct_infreq(Species.Description))%>%
+  ggplot(aes(x= species, y = n)) + #reorder makes bars descending order
+  geom_bar(stat = "identity") + #allows for the count to be plotted
+  theme_minimal()+ #introduces a theme to the figure instead of the standard output
+  facet_wrap(~Borough, nrow=1)
+
+plot2
+
+```
