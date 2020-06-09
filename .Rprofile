@@ -3,7 +3,6 @@ if (file.exists("~/.Rprofile")) {
 }
 
 options(
-  servr.daemon = TRUE,
   blogdown.author = "Steven DiFalco",
   blogdown.ext = ".Rmd",
   blogdown.subdir = "post",

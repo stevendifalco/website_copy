@@ -34,22 +34,6 @@
   enable = true
 
 [[buttons]]
-  id = "whatsapp"
-  url = "https://web.whatsapp.com/send?text={title}%20{url}"
-  title = "WhatsApp"
-  icon_pack = "fab"
-  icon = "whatsapp"
-  enable = true
-
-[[buttons]]
-  id = "weibo"
-  url = "https://service.weibo.com/share/share.php?url={url}&title={title}"
-  title = "Weibo"
-  icon_pack = "fab"
-  icon = "weibo"
-  enable = true
-
-[[buttons]]
   id = "reddit"
   url = "https://reddit.com/submit?url={url}&title={title}"
   title = "Reddit"
@@ -65,18 +49,3 @@
   icon = "pinterest"
   enable = false
 
-[[buttons]]
-  id = "xing"
-  url = "https://www.xing.com/spi/shares/new?url={url}&title={title}"
-  title = "Xing"
-  icon_pack = "fab"
-  icon = "xing"
-  enable = false
-
-[[buttons]]
-  id = "tumblr"
-  url = "https://www.tumblr.com/widgets/share/tool?canonicalUrl={url}&title={title}"
-  title = "Tumblr"
-  icon_pack = "fab"
-  icon = "tumblr"
-  enable = false
