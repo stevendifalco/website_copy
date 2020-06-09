@@ -1,16 +1,16 @@
 ---
-title: Walkability
+title: Walking
 author: Steven DiFalco
-date: '2020-06-08'
+date: '2020-06-09'
 slug: []
 categories:
   - posts
 tags:
-  - data visualizations
+  - R
 subtitle: ''
 summary: ''
 authors: []
-lastmod: '2020-06-08T23:54:58-04:00'
+lastmod: '2020-06-09T00:03:55-04:00'
 featured: no
 image:
   caption: ''
