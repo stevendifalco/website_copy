@@ -1,16 +1,13 @@
 ---
-title: "Test post"
-author: "Steven DiFalco"
+title: Test Post
+author: Steven DiFalco
 date: '2020-06-08'
-output:
-  html_document:
-    df_print: paged
-slug: test-post
-tags: data visualizations
-categories: posts
+slug: []
+categories:
+  - posts
+tags:
+  - data visualizations
 ---
-
-#Test post for markdown documents
 
 ```{r}
 
