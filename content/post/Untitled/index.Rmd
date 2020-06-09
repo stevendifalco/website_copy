@@ -18,7 +18,6 @@ image:
 
 ```{r global_options, include = FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, comment = "#")
-library(fontawesome)
 ```
 
 {{% alert note %}}
@@ -36,14 +35,6 @@ blogdown::shortcode("youtube", "Mayf_XhsQDE")
 
 Warning!: I made a mistake when I said `readr` uses the first 100 rows of your data to predict column types- it uses the first 1000 rows.
 
----
-
-`r fa("download", fill = "#ee5863")` 
-```{r echo = FALSE} 
-xfun::embed_files("PosidFazioCordes_StickerRich_Excel-Dataverse.tab.tsv", name = "stickers.csv")
-```
-
----
 
 # Being sticker rich
 
