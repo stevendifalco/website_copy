@@ -1,0 +1,43 @@
+---
+title: 'Geocoding Points by Place Name using ArcGIS Online '
+author: Steven DiFalco
+date: '2020-06-11'
+draft: TRUE 
+slug: geocoding-points-by-place-name-using-arcgis-online
+categories:
+  - post
+  - data visualizations
+tags:
+  - ArcGIS
+  - ArcOnline
+  - data visualizations
+  - mapping
+  - NYC
+subtitle: ''
+summary: ''
+authors: [Steven]
+lastmod: '2020-06-11T22:12:27-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: [Mapping]
+---
+
+## This is the second post to using the Urban Ranger Response Call from NYC Open Data *link here*. The data did not have location information, so I thought to try and geolocate it. As the data had specific property information, and most of them are parks, I thought it shouldn't be too difficult to do. 
+
+```{r include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(tidytext)
+```
+
+```{r echo=TRUE}
+
+data_raw <- read.csv("UrbanRangerDataClean-OR.csv")
+
+#Animal by species
+head(data_raw %>% count(Species.Description, sort =T))
+
+

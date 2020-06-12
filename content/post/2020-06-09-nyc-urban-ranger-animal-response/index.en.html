@@ -2,7 +2,7 @@
 title: NYC Urban Ranger Animal Response
 author: Steven DiFalco
 date: '2020-06-09'
-draft: True
+draft: TRUE
 slug: nyc-urban-ranger-animal-response
 categories:
   - post
@@ -69,37 +69,58 @@ head(data_raw %&gt;% count(Animal.Class, sort =T))</code></pre>
     )
   )
 
-#Grouping by species for top 20 most abundant species
+write.csv(data_clean, &quot;UrbanRangerDataClean.csv&quot;)</code></pre>
+</div>
+<div id="overall-this-is-much-better-now-and-solved-some-issues.-i-consolidated-the-animal.class-category-to-make-further-analysis-easier-but-recognize-this-may-have-over-simplified-some-details.-there-are-some-cases-when-some-species-are-labelled-different-ways.-well-leave-this-for-now." class="section level3">
+<h3>Overall, this is much better now and solved some issues. I consolidated the <code>Animal.Class</code> category to make further analysis easier, but recognize this may have over simplified some details. There are some cases when some species are labelled different ways. We’ll leave this for now.</h3>
+<pre class="r"><code>#Grouping by species for top 20 most abundant species
 species &lt;- data_clean %&gt;%
   count(Species.Description, sort = TRUE) %&gt;%
   top_n(20) </code></pre>
 <pre><code>## Selecting by n</code></pre>
-<pre class="r"><code>#Creating dataframe of just
-class &lt;- data_clean %&gt;%
-  count(Animal.Class, sort = TRUE)</code></pre>
-</div>
-<div id="overall-this-is-much-better-now-and-solved-some-issues.-i-consolidated-the-animal.class-category-to-make-further-analysis-easier-but-recognize-this-may-have-over-simplified-some-details.-there-are-some-cases-when-some-species-are-labelled-different-ways.-well-leave-this-for-now." class="section level3">
-<h3>Overall, this is much better now and solved some issues. I consolidated the <code>Animal.Class</code> category to make further analysis easier, but recognize this may have over simplified some details. There are some cases when some species are labelled different ways. We’ll leave this for now.</h3>
 <pre class="r"><code>#Species count
 plot &lt;- ggplot(data = species, aes(x= reorder(Species.Description, n), y = n)) + #reorder makes bars descending order
   geom_bar(stat = &quot;identity&quot;) + #allows for the count to be plotted
   coord_flip() + #rotates graph
-  ylab(&quot;Count&quot;)+
-  xlab(&quot;Species&quot;)+ 
+  labs(title= &quot;Top 20 Species Count&quot;, y= &quot;Count&quot;,x =&quot;Species&quot;) + 
   theme_minimal() #introduces a theme to the figure instead of the standard output
 
 plot</code></pre>
 <p><img src="/post/2020-06-09-nyc-urban-ranger-animal-response/index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="funny-to-see-that-chickens-are-the-fourth-most-reported-animal-in-this-dataset" class="section level3">
+<h3>Funny to see that chickens are the fourth most reported animal in this dataset!</h3>
+</div>
+<div id="with-such-a-high-abundance-of-calls-for-raccoons-im-going-to-remove-them-from-the-next-graphic.-this-way-we-can-understand-how-the-rest-of-the-species-distributions-look.-looking-at-how-the-animal.class-reported-across-the-boroughs." class="section level3">
+<h3>With such a high abundance of calls for raccoons, I’m going to remove them from the next graphic. This way we can understand how the rest of the species distributions look. Looking at how the <code>Animal.Class</code> reported across the boroughs.</h3>
 <pre class="r"><code>plot2 &lt;- data_clean %&gt;%
-  group_by(Species.Description) %&gt;%
-  count(Species.Description, Borough, sort = TRUE) %&gt;% top_n(20) %&gt;%
-  mutate(species = fct_infreq(Species.Description))%&gt;%
-  ggplot(aes(x= species, y = n)) + #reorder makes bars descending order
-  geom_bar(stat = &quot;identity&quot;) + #allows for the count to be plotted
-  theme_minimal()+ #introduces a theme to the figure instead of the standard output
-  facet_wrap(~Borough, nrow=1)</code></pre>
-<pre><code>## Selecting by n</code></pre>
-<pre class="r"><code>plot2</code></pre>
+  filter(Species.Description != &quot;raccoon&quot;) %&gt;%
+  group_by(Borough) %&gt;%
+  count(Animal.Class, sort = TRUE)%&gt;%
+  ggplot(aes(x= reorder(Animal.Class, n), y = n)) + #reorder makes bars descending order, n represents count
+  geom_bar(aes(fill=Borough), stat = &quot;identity&quot;) + #allows for the count to be plotted
+  scale_fill_brewer(palette = &quot;Greens&quot;) +
+  theme_classic()+ #introduces a theme to the figure instead of the standard output
+  facet_wrap(~Borough, nrow=1)+
+  labs(title = &quot;Reports by Animal Classification, without raccoons&quot;, y= &quot;Number of individuals reported&quot;, x=NULL)+
+  coord_flip()
+
+plot2</code></pre>
 <p><img src="/post/2020-06-09-nyc-urban-ranger-animal-response/index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="now-that-we-know-that-there-are-differences-across-the-boroughs-lets-take-a-look-at-the-most-popular-places-animals-are-reported.-not-surprising-this-dataset-falls-within-the-nyc-parks-most-often." class="section level3">
+<h3>Now that we know that there are differences across the boroughs, let’s take a look at the most popular places animals are reported. Not surprising, this dataset falls within the NYC Parks most often.</h3>
+<pre class="r"><code>plot3 &lt;- data_clean %&gt;% 
+  count(Property, Borough, sort = TRUE) %&gt;%
+  top_n(10, n) %&gt;%
+  ggplot(aes(x=reorder(Property, -n), y=n)) +
+  geom_bar(aes(fill = Borough), stat = &quot;identity&quot;)+
+  scale_fill_brewer(palette = &quot;Greens&quot;)+
+  xlab(&quot;Park&quot;) +
+  ylab(&quot;Number of reported animals&quot;)+
+  theme_minimal()
+
+plot3</code></pre>
+<p><img src="/post/2020-06-09-nyc-urban-ranger-animal-response/index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 </div>

@@ -2,7 +2,7 @@
 title: NYC Urban Ranger Animal Response
 author: Steven DiFalco
 date: '2020-06-09'
-draft: True
+draft: TRUE
 slug: nyc-urban-ranger-animal-response
 categories:
   - post
@@ -66,45 +66,63 @@ data_clean <- data_raw %>%
     )
   )
 
-#Grouping by species for top 20 most abundant species
-species <- data_clean %>%
-  count(Species.Description, sort = TRUE) %>%
-  top_n(20) 
-
-#Creating dataframe of just
-class <- data_clean %>%
-  count(Animal.Class, sort = TRUE)
-
-
-
+write.csv(data_clean, "UrbanRangerDataClean.csv")
 ```
 ### Overall, this is much better now and solved some issues. I consolidated the `Animal.Class` category to make further analysis easier, but recognize this may have over simplified some details. There are some cases when some species are labelled different ways. We'll leave this for now. 
 
 ```{r}
 
+#Grouping by species for top 20 most abundant species
+species <- data_clean %>%
+  count(Species.Description, sort = TRUE) %>%
+  top_n(20) 
+
 #Species count
 plot <- ggplot(data = species, aes(x= reorder(Species.Description, n), y = n)) + #reorder makes bars descending order
   geom_bar(stat = "identity") + #allows for the count to be plotted
   coord_flip() + #rotates graph
-  ylab("Count")+
-  xlab("Species")+ 
+  labs(title= "Top 20 Species Count", y= "Count",x ="Species") + 
   theme_minimal() #introduces a theme to the figure instead of the standard output
 
 plot
 
 ```
 
+### Funny to see that chickens are the fourth most reported animal in this dataset!
+
+### With such a high abundance of calls for raccoons, I'm going to remove them from the next graphic. This way we can understand how the rest of the species distributions look. Looking at how the `Animal.Class` reported across the boroughs. 
+
 ```{r}
 
 plot2 <- data_clean %>%
-  group_by(Species.Description) %>%
-  count(Species.Description, Borough, sort = TRUE) %>% top_n(20) %>%
-  mutate(species = fct_infreq(Species.Description))%>%
-  ggplot(aes(x= species, y = n)) + #reorder makes bars descending order
-  geom_bar(stat = "identity") + #allows for the count to be plotted
-  theme_minimal()+ #introduces a theme to the figure instead of the standard output
-  facet_wrap(~Borough, nrow=1)
+  filter(Species.Description != "raccoon") %>%
+  group_by(Borough) %>%
+  count(Animal.Class, sort = TRUE)%>%
+  ggplot(aes(x= reorder(Animal.Class, n), y = n)) + #reorder makes bars descending order, n represents count
+  geom_bar(aes(fill=Borough), stat = "identity") + #allows for the count to be plotted
+  scale_fill_brewer(palette = "Greens") +
+  theme_classic()+ #introduces a theme to the figure instead of the standard output
+  facet_wrap(~Borough, nrow=1)+
+  labs(title = "Reports by Animal Classification, without raccoons", y= "Number of individuals reported", x=NULL)+
+  coord_flip()
 
 plot2
 
+```
+
+### Now that we know that there are differences across the boroughs, let's take a look at the most popular places animals are reported. Not surprising, this dataset falls within the NYC Parks most often. 
+
+```{r}
+
+plot3 <- data_clean %>% 
+  count(Property, Borough, sort = TRUE) %>%
+  top_n(10, n) %>%
+  ggplot(aes(x=reorder(Property, -n), y=n)) +
+  geom_bar(aes(fill = Borough), stat = "identity")+
+  scale_fill_brewer(palette = "Greens")+
+  xlab("Park") +
+  ylab("Number of reported animals")+
+  theme_minimal()
+
+plot3
 ```
