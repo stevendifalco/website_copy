@@ -18,10 +18,10 @@
   url = "/projects"
   weight = 30
 
-[[main]]
-  name = "Recipes"
-  url = "/recipes"
-  weight = 40
+#[[main]]
+#  name = "Recipes"
+#  url = "/recipes"
+#  weight = 40
 
 [[main]]
   name = "Contact"
