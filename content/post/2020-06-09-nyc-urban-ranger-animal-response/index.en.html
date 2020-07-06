@@ -23,10 +23,10 @@ projects: [Other]
 
 
 
-<div id="i-came-across-this-dataset-from-nyc-from-urban-park-ranger-animal-condition-response-source-httpsdata.cityofnewyork.usenvironmenturban-park-ranger-animal-condition-responsefuhs-xmg2.-from-may-2018---june-2019-data-was-collected-on-animal-calls-received-by-the-urban-park-rangers-of-new-york-city.-most-of-these-reports-would-be-associated-with-city-parks-for-animals-in-distress." class="section level2">
-<h2>I came across this dataset from NYC from Urban Park Ranger Animal Condition Response [source] (<a href="https://data.cityofnewyork.us/Environment/Urban-Park-Ranger-Animal-Condition-Response/fuhs-xmg2" class="uri">https://data.cityofnewyork.us/Environment/Urban-Park-Ranger-Animal-Condition-Response/fuhs-xmg2</a>). From May 2018 - June 2019, data was collected on animal calls received by the Urban Park Rangers of New York City. Most of these reports would be associated with city parks for animals in distress.</h2>
-<div id="lets-take-a-look-at-the-data-and-see-what-types-of-animals-have-appeared-in-nyc" class="section level3">
-<h3>Let’s take a look at the data and see what types of animals have appeared in NYC!</h3>
+<div id="i-came-across-this-dataset-from-nyc-from-urban-park-ranger-animal-condition-response-source-httpsdata.cityofnewyork.usenvironmenturban-park-ranger-animal-condition-responsefuhs-xmg2.-from-may-2018---june-2019-data-was-collected-on-animal-calls-received-by-the-urban-park-rangers-of-new-york-city.-most-of-these-reports-would-be-associated-with-city-parks-for-animals-in-distress." class="section level4">
+<h4>I came across this dataset from NYC from Urban Park Ranger Animal Condition Response [source] (<a href="https://data.cityofnewyork.us/Environment/Urban-Park-Ranger-Animal-Condition-Response/fuhs-xmg2" class="uri">https://data.cityofnewyork.us/Environment/Urban-Park-Ranger-Animal-Condition-Response/fuhs-xmg2</a>). From May 2018 - June 2019, data was collected on animal calls received by the Urban Park Rangers of New York City. Most of these reports would be associated with city parks for animals in distress.</h4>
+<div id="lets-take-a-look-at-the-data-and-see-what-types-of-animals-have-appeared-in-nyc" class="section level5">
+<h5>Let’s take a look at the data and see what types of animals have appeared in NYC!</h5>
 <pre class="r"><code>data_raw &lt;- read.csv(&quot;Urban_Park_Ranger_Animal_Condition_Response.csv&quot;)
 
 #Animal by species
@@ -48,8 +48,8 @@ head(data_raw %&gt;% count(Animal.Class, sort =T))</code></pre>
 ## 5            Small Mammals-non RVS  49
 ## 6 Terrestrial Reptile or Amphibian  21</code></pre>
 </div>
-<div id="clearly-a-lot-of-calls-for-raccoons-unfortunately-this-dataset-does-not-include-the-reason-for-the-call-besides-healthy-unhealthy-dead-on-arrival-doa.-there-is-some-cleaning-needed-when-looking-at-the-classifications.-looking-at-marine-reptiles-shows-theyre-actually-terrestrial-reptiles.-lets-do-some-cleaning." class="section level3">
-<h3>Clearly, a lot of calls for raccoons! Unfortunately, this dataset does not include the reason for the call besides <code>healthy, unhealthy, dead on arrival (DOA)</code>. There is some cleaning needed when looking at the classifications. Looking at <code>$Marine Reptiles</code> shows they’re actually <code>$Terrestrial Reptiles</code>. Let’s do some cleaning.</h3>
+<div id="clearly-a-lot-of-calls-for-raccoons-unfortunately-this-dataset-does-not-include-the-reason-for-the-call-besides-healthy-unhealthy-dead-on-arrival-doa.-there-is-some-cleaning-needed-when-looking-at-the-classifications.-looking-at-marine-reptiles-shows-theyre-actually-terrestrial-reptiles.-lets-do-some-cleaning." class="section level5">
+<h5>Clearly, a lot of calls for raccoons! Unfortunately, this dataset does not include the reason for the call besides <code>healthy, unhealthy, dead on arrival (DOA)</code>. There is some cleaning needed when looking at the classifications. Looking at <code>$Marine Reptiles</code> shows they’re actually <code>$Terrestrial Reptiles</code>. Let’s do some cleaning.</h5>
 <pre class="r"><code>data_clean &lt;- data_raw %&gt;%
   mutate(
     Species.Description = str_to_lower(Species.Description), #removes capitializations
@@ -70,8 +70,8 @@ head(data_raw %&gt;% count(Animal.Class, sort =T))</code></pre>
 
 write.csv(data_clean, &quot;UrbanRangerDataClean.csv&quot;)</code></pre>
 </div>
-<div id="overall-this-is-much-better-now-and-solved-some-issues.-i-consolidated-the-animal.class-category-to-make-further-analysis-easier-but-recognize-this-may-have-over-simplified-some-details.-there-are-some-cases-when-some-species-are-labelled-different-ways.-well-leave-this-for-now." class="section level3">
-<h3>Overall, this is much better now and solved some issues. I consolidated the <code>Animal.Class</code> category to make further analysis easier, but recognize this may have over simplified some details. There are some cases when some species are labelled different ways. We’ll leave this for now.</h3>
+<div id="overall-this-is-much-better-now-and-solved-some-issues.-i-consolidated-the-animal.class-category-to-make-further-analysis-easier-but-recognize-this-may-have-over-simplified-some-details.-there-are-some-cases-when-some-species-are-labelled-different-ways.-well-leave-this-for-now." class="section level5">
+<h5>Overall, this is much better now and solved some issues. I consolidated the <code>Animal.Class</code> category to make further analysis easier, but recognize this may have over simplified some details. There are some cases when some species are labelled different ways. We’ll leave this for now.</h5>
 <pre class="r"><code>#Grouping by species for top 20 most abundant species
 species &lt;- data_clean %&gt;%
   count(Species.Description, sort = TRUE) %&gt;%
@@ -87,11 +87,11 @@ plot &lt;- ggplot(data = species, aes(x= reorder(Species.Description, n), y = n)
 plot</code></pre>
 <p><img src="/post/2020-06-09-nyc-urban-ranger-animal-response/index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
-<div id="funny-to-see-that-chickens-are-the-fourth-most-reported-animal-in-this-dataset" class="section level3">
-<h3>Funny to see that chickens are the fourth most reported animal in this dataset!</h3>
+<div id="funny-to-see-that-chickens-are-the-fourth-most-reported-animal-in-this-dataset" class="section level5">
+<h5>Funny to see that chickens are the fourth most reported animal in this dataset!</h5>
 </div>
-<div id="with-such-a-high-abundance-of-calls-for-raccoons-im-going-to-remove-them-from-the-next-graphic.-this-way-we-can-understand-how-the-rest-of-the-species-distributions-look.-looking-at-how-the-animal.class-reported-across-the-boroughs." class="section level3">
-<h3>With such a high abundance of calls for raccoons, I’m going to remove them from the next graphic. This way we can understand how the rest of the species distributions look. Looking at how the <code>Animal.Class</code> reported across the boroughs.</h3>
+<div id="with-such-a-high-abundance-of-calls-for-raccoons-im-going-to-remove-them-from-the-next-graphic.-this-way-we-can-understand-how-the-rest-of-the-species-distributions-look.-looking-at-how-the-animal.class-reported-across-the-boroughs." class="section level5">
+<h5>With such a high abundance of calls for raccoons, I’m going to remove them from the next graphic. This way we can understand how the rest of the species distributions look. Looking at how the <code>Animal.Class</code> reported across the boroughs.</h5>
 <pre class="r"><code>plot2 &lt;- data_clean %&gt;%
   filter(Species.Description != &quot;raccoon&quot;) %&gt;%
   group_by(Borough) %&gt;%
@@ -107,17 +107,18 @@ plot</code></pre>
 plot2</code></pre>
 <p><img src="/post/2020-06-09-nyc-urban-ranger-animal-response/index.en_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
-<div id="now-that-we-know-that-there-are-differences-across-the-boroughs-lets-take-a-look-at-the-most-popular-places-animals-are-reported.-not-surprising-this-dataset-falls-within-the-nyc-parks-most-often." class="section level3">
-<h3>Now that we know that there are differences across the boroughs, let’s take a look at the most popular places animals are reported. Not surprising, this dataset falls within the NYC Parks most often.</h3>
+<div id="now-that-we-know-that-there-are-differences-across-the-boroughs-lets-take-a-look-at-the-most-popular-places-animals-are-reported.-not-surprising-this-dataset-falls-within-the-nyc-parks-most-often." class="section level5">
+<h5>Now that we know that there are differences across the boroughs, let’s take a look at the most popular places animals are reported. Not surprising, this dataset falls within the NYC Parks most often.</h5>
 <pre class="r"><code>plot3 &lt;- data_clean %&gt;% 
   count(Property, Borough, sort = TRUE) %&gt;%
   top_n(10, n) %&gt;%
   ggplot(aes(x=reorder(Property, -n), y=n)) +
   geom_bar(aes(fill = Borough), stat = &quot;identity&quot;)+
   scale_fill_brewer(palette = &quot;Greens&quot;)+
-  xlab(&quot;Park&quot;) +
+  xlab(&quot;&quot;)+
   ylab(&quot;Number of reported animals&quot;)+
-  theme_minimal()
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) #rotates labels 45 degrees and adjust down to not overlap axis
 
 plot3</code></pre>
 <p><img src="/post/2020-06-09-nyc-urban-ranger-animal-response/index.en_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
