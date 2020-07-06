@@ -12,7 +12,7 @@ image:
   focal_point: ''
 ---
 
-### As part of the ![Tidy Tuesday](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-11-05), these figures display different levels of Bike and Walk Commutes based on American Community Survey data. 
+### As part of the [TidyTuesday](https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-11-05), these figures display different levels of Bike and Walk Commutes based on American Community Survey data. 
 
 ```{r include=FALSE}
 
