@@ -6,12 +6,14 @@ slug: geocoding-points-by-place-name-using-arcgis-online
 categories:
   - post
   - data visualizations
+  - geocoding
 tags:
   - ArcGIS
   - ArcOnline
   - ArcGIS Online
   - data visualizations
   - mapping
+  - geocoding
   - NYC
 subtitle: ''
 summary: ''
@@ -19,16 +21,15 @@ authors: [Steven]
 lastmod: '2020-06-11T22:12:27-04:00'
 featured: no
 image:
-  caption: ''
+  caption: 'Geocoded Points'
   focal_point: ''
-  preview_only: no
 projects: [Mapping]
 ---
 
 
 
 <div id="this-is-the-second-post-to-using-the-urban-ranger-response-call-from-nyc-open-data-first-posthttpswww.stevendifalco.compostnyc-urban-ranger-animal-response.-the-data-did-not-have-specific-location-information-such-as-xy-coordinates-but-there-was-a-field-property-in-the-database.-using-this-field-i-decided-to-try-out-geocoding-the-information-in-arcgis-online." class="section level5">
-<h5>This is the second post to using the Urban Ranger Response Call from NYC Open Data !(first post)[<a href="https://www.stevendifalco.com/post/nyc-urban-ranger-animal-response/" class="uri">https://www.stevendifalco.com/post/nyc-urban-ranger-animal-response/</a>]. The data did not have specific location information, such as XY coordinates, but there was a field <code>Property</code> in the database. Using this field, I decided to try out geocoding the information in ArcGIS Online.</h5>
+<h5>This is the second post to using the Urban Ranger Response Call from NYC Open Data (first post)[<a href="https://www.stevendifalco.com/post/nyc-urban-ranger-animal-response/" class="uri">https://www.stevendifalco.com/post/nyc-urban-ranger-animal-response/</a>]. The data did not have specific location information, such as XY coordinates, but there was a field <code>Property</code> in the database. Using this field, I decided to try out geocoding the information in ArcGIS Online.</h5>
 </div>
 <div id="to-start-lets-read-in-the-data.-in-viewing-the-first-10-rows-i-already-see-we-might-have-some-cleaning-needed-for-this-column-also.-washingtom-vs-washington-square-park." class="section level5">
 <h5>To start, let’s read in the data. In viewing the first 10 rows, I already see we might have some cleaning needed for this column also. “WashingtoM” vs “WashingtoN” Square Park.</h5>
@@ -46,14 +47,14 @@ head(data_raw$Property, n=10)</code></pre>
 ## 194 Levels: 5 East 102nd St 851 Fairmont Pl Abingdon Square ... Wolfe&#39;s Pond Park</code></pre>
 </div>
 <div id="i-decided-to-try-out-using-open-refinehttpsopenrefine.org-to-clean-up-the-data-instead-of-trying-to-use-r.-open-refine-simplifies-the-process-of-finding-text-that-are-close-to-one-another-and-allows-for-easy-cleaning.-follow-videos-on-their-webpage-to-get-the-data_raw.csv-file-uploaded-if-you-want-to-follow-along." class="section level5">
-<h5>I decided to try out using !(Open Refine)[<a href="https://openrefine.org/" class="uri">https://openrefine.org/</a>] to clean up the data instead of trying to use R. Open Refine simplifies the process of finding text that are close to one another and allows for easy cleaning. Follow videos on their webpage to get the <code>data_raw.csv</code> file uploaded if you want to follow along.</h5>
+<h5>I decided to try out using (Open Refine)[<a href="https://openrefine.org/" class="uri">https://openrefine.org/</a>] to clean up the data instead of trying to use R. Open Refine simplifies the process of finding text that are close to one another and allows for easy cleaning. Follow videos on their webpage to get the <code>data_raw.csv</code> file uploaded if you want to follow along.</h5>
 </div>
 <div id="using-the-facet-feature-on-the-property-column-we-can-group-together-like-text.-using-cluster-and-nearest-neighbor-function-we-get-the-pop-up-below.-i-went-through-different-types-of-clustering-to-merge-similar-properties-names-together.-i-also-did-the-step-above-for-species.description-and-animal.class-to-refine-these-columns.-last-step-add-a-column-for-state-and-put-new-york-for-all-entries--reason-will-be-clear-below.-export-this-csv-file." class="section level5">
 <h5>Using the Facet feature on the Property Column, we can group together like text. Using Cluster and Nearest Neighbor function, we get the pop-up below. I went through different types of clustering to merge similar properties names together. I also did the step above for <code>species.description</code> and <code>animal.class</code> to refine these columns. <em>Last</em> step, add a column for <code>State</code> and put New York for all entries- reason will be clear below. Export this csv file.</h5>
 <p><img src="OpenRefine.png" title="photo" /></p>
 </div>
 <div id="now-to-bring-this-over-to-arconline-to-geocode-but-one-final-step-is-needed-first-creating-a-layer-which-allows-arconline-to-query-location-names-for-geocoding.-i-followed-thishttpsdoc.arcgis.comenarcgis-onlinereferencegeocode.htm-tutorial-to-make-one-for-the-united-states." class="section level5">
-<h5>Now to bring this over to ArcOnline to geocode! But one final step is needed first; creating a layer which allows ArcOnline to query location names for geocoding. I followed !(this)[<a href="https://doc.arcgis.com/en/arcgis-online/reference/geocode.htm" class="uri">https://doc.arcgis.com/en/arcgis-online/reference/geocode.htm</a>] tutorial to make one for the United States.</h5>
+<h5>Now to bring this over to ArcOnline to geocode! But one final step is needed first; creating a layer which allows ArcOnline to query location names for geocoding. I followed (this)[<a href="https://doc.arcgis.com/en/arcgis-online/reference/geocode.htm" class="uri">https://doc.arcgis.com/en/arcgis-online/reference/geocode.htm</a>] tutorial to make one for the United States.</h5>
 </div>
 <div id="to-a-new-map-in-arcgis-online-add-the-cleaned-data-and-you-will-get-a-popup-that-looks-like-this" class="section level5">
 <h5>To a new map in ArcGIS Online, add the cleaned data and you will get a popup that looks like this:</h5>
@@ -61,14 +62,14 @@ head(data_raw$Property, n=10)</code></pre>
 </div>
 <div id="change-location-field-to-state-state-and-property-location-or-place." class="section level5">
 <h5>Change “Location Field” to State= State and Property = Location or Place.</h5>
-<p>[](csv2.png &quot;photo).</p>
+<p><img src="csv2.png" title="photo" /></p>
 </div>
 <div id="without-adding-the-state-column-originally-the-dataset-put-points-across-the-us-such-as-this-group-in-manhattan-kansas.-just-adding-the-additional-information-focused-the-points-to-be-mapped-at-least-in-ny-state-with-the-majority-in-the-correct-nyc-area." class="section level5">
 <h5>Without adding the state column, originally the dataset put points across the US, such as this <em>group</em> in Manhattan, Kansas. Just adding the additional information focused the points to be mapped at least in NY state, with the majority in the correct NYC area.</h5>
 <p><img src="ManhattanKansas.png" /></p>
 </div>
-<div id="continuing-to-explore-data-next-post-but-here-is-the-current-online-map-to-explore." class="section level4">
-<h4>Continuing to explore data next post, but here is the current online map to explore.</h4>
+<div id="continuing-to-explore-data-next-post-but-here-is-the-current-online-map-to-explore.-orange-in-this-map-were-points-with-the-statefield-vs-those-without-state-field." class="section level4">
+<h4>Continuing to explore data next post, but here is the current online map to explore. Orange in this map were points with the statefield, vs those without state field.</h4>
 <style>.embed-container {position: relative; padding-bottom: 80%; height: 0; max-width: 100%;} .embed-container iframe, .embed-container object, .embed-container iframe{position: absolute; top: 0; left: 0; width: 100%; height: 100%;} small{position: absolute; z-index: 40; bottom: 0; margin-bottom: -15px;}</style>
 <div class="embed-container">
 <iframe width="500" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" title="NYC Urban Ranger Calls" src="//connecticut.maps.arcgis.com/apps/Embed/index.html?webmap=d2882ff5ac854c159a4e68cb20cf410d&amp;extent=-74.2129,40.4659,-73.4658,40.7973&amp;zoom=true&amp;previewImage=false&amp;scale=true&amp;disable_scroll=true&amp;theme=light">
