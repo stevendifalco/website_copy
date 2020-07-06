@@ -2,7 +2,6 @@
 title: 'Geocoding Points by Place Name using ArcGIS Online '
 author: Steven DiFalco
 date: '2020-06-11'
-draft: TRUE 
 slug: geocoding-points-by-place-name-using-arcgis-online
 categories:
   - post
@@ -10,6 +9,7 @@ categories:
 tags:
   - ArcGIS
   - ArcOnline
+  - ArcGIS Online
   - data visualizations
   - mapping
   - NYC
@@ -25,7 +25,7 @@ image:
 projects: [Mapping]
 ---
 
-## This is the second post to using the Urban Ranger Response Call from NYC Open Data *link here*. The data did not have location information, so I thought to try and geolocate it. As the data had specific property information, and most of them are parks, I thought it shouldn't be too difficult to do. 
+##### This is the second post to using the Urban Ranger Response Call from NYC Open Data !(first post)[https://www.stevendifalco.com/post/nyc-urban-ranger-animal-response/]. The data did not have specific location information, such as XY coordinates, but there was a field `Property` in the database. Using this field, I decided to try out geocoding the information in ArcGIS Online. 
 
 ```{r include=FALSE}
 library(tidyverse)
@@ -33,11 +33,42 @@ library(ggplot2)
 library(tidytext)
 ```
 
+##### To start, let's read in the data. In viewing the first 10 rows, I already see we might have some cleaning needed for this column also. "WashingtoM" vs "WashingtoN" Square Park. 
+
 ```{r echo=TRUE}
+#Note, this first csv has been cleaned as part of the first post, so see that part to check what has been changed already from the original dataset. 
 
-data_raw <- read.csv("UrbanRangerDataClean-OR.csv")
+data_raw <- read.csv("UrbanRangerDataClean.csv")
 
-#Animal by species
-head(data_raw %>% count(Species.Description, sort =T))
+#Calls by property
+head(data_raw$Property, n=10)
+```
+
+##### I decided to try out using !(Open Refine)[https://openrefine.org/] to clean up the data instead of trying to use R.  Open Refine simplifies the process of finding text that are close to one another and allows for easy cleaning. Follow videos on their webpage to get the `data_raw.csv` file uploaded if you want to follow along. 
+
+##### Using the Facet feature on the Property Column, we can group together like text. Using Cluster and Nearest Neighbor function, we get the pop-up below. I went through different types of clustering to merge similar properties names together. I also did the step above for `species.description` and `animal.class` to refine these columns. *Last* step, add a column for `State` and put New York for all entries- reason will be clear below. Export this csv file.
+
+![](OpenRefine.png "photo")
+
+##### Now to bring this over to ArcOnline to geocode! But one final step is needed first; creating a layer which allows ArcOnline to query location names for geocoding. I followed !(this)[https://doc.arcgis.com/en/arcgis-online/reference/geocode.htm] tutorial to make one for the United States.
+
+##### To a new map in ArcGIS Online, add the cleaned data and you will get a popup that looks like this:
+
+![](CSV.png "photo")
+
+##### Change "Location Field" to State= State and Property = Location or Place. 
+
+![](csv2.png "photo).
+
+##### Without adding the state column, originally the dataset put points across the US, such as this *group* in Manhattan, Kansas. Just adding the additional information focused the points to be mapped at least in NY state, with the majority in the correct NYC area.
+
+![](ManhattanKansas.png)
+
+
+#### Continuing to explore data next post, but here is the current online map to explore. 
+
+
+<style>.embed-container {position: relative; padding-bottom: 80%; height: 0; max-width: 100%;} .embed-container iframe, .embed-container object, .embed-container iframe{position: absolute; top: 0; left: 0; width: 100%; height: 100%;} small{position: absolute; z-index: 40; bottom: 0; margin-bottom: -15px;}</style><div class="embed-container"><iframe width="500" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" title="NYC Urban Ranger Calls" src="//connecticut.maps.arcgis.com/apps/Embed/index.html?webmap=d2882ff5ac854c159a4e68cb20cf410d&extent=-74.2129,40.4659,-73.4658,40.7973&zoom=true&previewImage=false&scale=true&disable_scroll=true&theme=light"></iframe></div>
+
 
 
