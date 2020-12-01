@@ -18,17 +18,31 @@ date_format = "Jan 2006"
 #   Leave `date_end` empty if it's your current employer.
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 [[experience]]
+  title = "Land Projects Coordinator"
+  company = "Westchester Land Trust"
+  company_url = ""
+  location = "Bedford, NY"
+  date_start = "2020-08-01"
+  date_end = ""
+  description = """
+  Responsibilities include:
+  * Assist with the identification and management of land acquisition and conservation projects
+  * Updating organization Strategic Conservation Plan including data collection and spatial analysis modeling for priority conservation projects
+  * Supporting the stewardship department with conservation easement monitoring and preserve management activities
+  """
+
+[[experience]]
   title = "Graduate Research Assistant"
   company = "University of Connecticut"
   company_url = ""
   location = "Storrs, CT"
   date_start = "2018-01-01"
-  date_end = ""
+  date_end = "2020-12-31"
   description = """
   Responsibilities include:
   * Planned and conducted research pertaining to socioecological research on attitudes of residents towards roadside vegetation management practices
   * Integrated human dimensions, landscape ecology, and spatial analysis to analyze data
-  * Supervised 10 research technicians in survey data entry, mapping, and data analysis
+  * Supervised 10 research technicians in survey data entry, point geolocation, mapping, and data analysis
   """
 
 [[experience]]
