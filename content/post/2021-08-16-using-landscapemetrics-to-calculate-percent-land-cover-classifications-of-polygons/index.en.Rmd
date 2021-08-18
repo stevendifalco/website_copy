@@ -1,0 +1,131 @@
+---
+title: Using LandscapeMetrics to Calculate Percent Land Cover Classifications of Polygons
+author: Steven DiFalco
+date: '2021-08-16'
+slug: using-landscapemetrics-to-calculate-percent-land-cover-classifications-of-polygons
+categories:
+  - land use
+  - landscape metrics
+tags: []
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-08-16T21:05:15-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: yes
+projects: []
+---
+#### I previously used the program FRAGSTATS a few times while in graduate school but never quite got the hang of it. Instead of struggling with FRAGSTATS, a friend and collegue [Nick Yarmey](https://nicholasyarmey.weebly.com/) used the LandscapeMetrics package to do the same calculations. Two years later, I finally found some time to play around with it and try it out. Check out [this post](https://cran.r-project.org/web/packages/landscapemetrics/vignettes/getstarted.html) if you want to get into the details of how landscape metrics functions. 
+
+```{r include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(tidytext)
+library(landscapetools)
+library(landscapemetrics)
+library(raster)
+library(sp)
+library(rgdal)
+library(spdep)
+library(rgeos)
+library(geosphere)
+library(tidyr)
+library(sf)
+library(dplyr)
+library(janitor)
+```
+
+##### To keep things simple, I'm going to use a shapefile with only one property in it. I used to work at Rockefeller State Park Preserve (RSPP) and thought it would be interesting to see what the different land cover classifications come up. The property includes fields, forests, and various wetlands.
+
+```{r}
+#rspp <- st_read("RSPP.shp") %>% st_transform(4326)
+
+rspp <- readOGR("RSPP.shp")
+
+
+map <- ggplot(rspp, aes(x = long, y = lat, group = group)) +
+  geom_polygon(color = "black", size = 0.1, fill = "lightgrey") +
+  ggtitle("RSPP Map")+
+  coord_equal() +
+  theme_minimal()
+
+print(map)
+```
+##### NLCD 2016 raster will be used for the land classifications. 
+```{r}
+nlcd <- raster("NLCD_Clipped.tif")
+
+## get information about the raster itself
+#check_landscape(nlcd) # get info on raster object
+
+## to speed up the processes, you can clip the raster to the extent of the shapefile. I already did this step previously.
+#nlcd_cropped <- crop(nlcd, esmts)
+
+```
+
+##### To mitigate problems with the projections not lining up, use spTransform to match datasets. Afterwards, the next steps will calculate the percentage of each land cover in the raster. I pivot the table and reame the coloumns so it's easier to understand the output of this calculation.
+
+```{r}
+#match the spatial projectsion between RSPP and NLCD dataset 
+rspp <- spTransform(rspp, proj4string(nlcd))
+
+#calculates % land cover for each type in polygon extent
+rspp_nlcd <- sample_lsm(landscape = nlcd, y= rspp, what= c("lsm_c_pland"))
+
+head(rspp_nlcd)
+```
+
+##### LandscapeMetric analyzes each polygon seperately for each class in the raster. Since the shapefile was a multipolygon, the tool automatically assigned a random number to each of my polygons (plot_id above). Seeing this, I'll go back and add my own ID so I know which is which polygon from the analysis. I have to convert the shapefile to be an sf object to use st_cast() to extract the multipolygon to singular polygons. Then assign a unique # to each polygon.  
+
+
+```{r}
+# convert shapefile to sf object
+rspp_sf <- as(rspp, "sf")
+
+# cast the multi to singular polygons
+rspp_cast <- st_cast(rspp_sf, "POLYGON")
+
+#add unique ID to each polygon
+rspp_cast$ID <- 1:nrow(rspp_cast)
+
+#lets view the differnce between this and the first map
+map <- ggplot() + 
+  geom_sf(data = rspp_cast, size = 1, color = rspp_cast$ID, fill = rspp_cast$ID) + 
+  ggtitle("RSPP Map") + 
+  coord_sf() +
+  theme_minimal()
+```
+
+##### Unfortunately, this shapefile had multiple small slivers in it. There are multiple roads surrounding this property and it is made up of multiple tax parcels, which caused this issue. Not a problem, we'll work with it as it is for now.
+```{r}
+print(map)
+```
+
+
+```{r}
+#calculates % land cover for each type in polygon extent
+rspp_nlcd <- sample_lsm(landscape = nlcd, y= rspp_cast, plot_id = rspp_cast$ID, what= c("lsm_c_pland"))
+
+#pivot to wide format consolidating by unique ID
+nlcd_wide <- pivot_wider(data= rspp_nlcd, names_from = class, values_from = value)
+
+#rename land cover types
+nlcd_wide<- nlcd_wide %>%
+  rename(
+    Open_Water = '11',
+    Dev_OS = '21', 
+    Barren = '31', Deciduous = '41', Evergreen = '42', MixedForest = '43',
+    Shrub_Scrub = '52', Grassland = '71', Pasture_Hay = '81',
+    WoodyWet = '90', EmergentWet = '95'
+  )
+
+#join to unique IDS
+#nlcd_rspp <- inner_join(rspp_cast, nlcd_wide, by= c("unique"="plot_id"))
+
+shapefile(nlcd_wide, "nlcd_rspp.shp", overwrite = T)
+st_write(nlcd_wide, "nlcd_rspp.shp", overwrite= T)
+
+```
