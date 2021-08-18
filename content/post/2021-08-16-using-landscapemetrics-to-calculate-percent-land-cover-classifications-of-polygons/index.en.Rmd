@@ -15,9 +15,11 @@ featured: no
 image:
   caption: ''
   focal_point: ''
-  preview_only: yes
+  preview_only: no
 projects: []
 ---
+#### *still work in progress*
+
 #### I previously used the program FRAGSTATS a few times while in graduate school but never quite got the hang of it. Instead of struggling with FRAGSTATS, a friend and collegue [Nick Yarmey](https://nicholasyarmey.weebly.com/) used the LandscapeMetrics package to do the same calculations. Two years later, I finally found some time to play around with it and try it out. Check out [this post](https://cran.r-project.org/web/packages/landscapemetrics/vignettes/getstarted.html) if you want to get into the details of how landscape metrics functions. 
 
 ```{r include=FALSE}
