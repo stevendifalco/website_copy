@@ -22,7 +22,7 @@ projects:
 - data visualizations
 ---
 
-#### I came across this dataset from NYC from Urban Park Ranger Animal Condition Response [source] (https://data.cityofnewyork.us/Environment/Urban-Park-Ranger-Animal-Condition-Response/fuhs-xmg2). From May 2018 - June 2019, data was collected on animal calls received by the Urban Park Rangers of New York City. Most of these reports would be associated with city parks for animals in distress. 
+#### I came across this dataset from NYC from Urban Park Ranger Animal Condition Response [source](https://data.cityofnewyork.us/Environment/Urban-Park-Ranger-Animal-Condition-Response/fuhs-xmg2). From May 2018 - June 2019, data was collected on animal calls received by the Urban Park Rangers of New York City. Most of these reports would be associated with city parks for animals in distress. 
 
 ##### Let's take a look at the data and see what types of animals have appeared in NYC!
 
