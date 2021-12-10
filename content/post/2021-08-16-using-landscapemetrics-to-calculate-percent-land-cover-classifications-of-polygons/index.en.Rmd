@@ -2,7 +2,7 @@
 title: Using LandscapeMetrics to Calculate Percent Land Cover Classifications of Polygons
 author: Steven DiFalco
 date: '2021-08-16'
-slug: using-landscapemetrics-to-calculate-percent-land-cover-classifications-of-polygons
+slug: landscapemetrics-to-calculate-percent-land-cover-classifications-of-polygons
 categories:
   - land use
   - landscape metrics
@@ -125,9 +125,15 @@ nlcd_wide<- nlcd_wide %>%
   )
 
 #join to unique IDS
-#nlcd_rspp <- inner_join(rspp_cast, nlcd_wide, by= c("unique"="plot_id"))
+nlcd_rspp <- inner_join(rspp_cast, nlcd_wide, by= c("ID"="plot_id"))
 
-shapefile(nlcd_wide, "nlcd_rspp.shp", overwrite = T)
-st_write(nlcd_wide, "nlcd_rspp.shp", overwrite= T)
+nlcd_rspp <- nlcd_rspp[nlcd_wide$percentage_inside > 0]
 
+map <- ggplot() + 
+  geom_sf(data = nlcd_rspp, size = 1, fill = nlcd_rspp$percentage_inside) + 
+  scale_fill_binned() +
+  ggtitle("RSPP Map") + 
+  coord_sf() +
+  theme_minimal()
+print(map)
 ```
