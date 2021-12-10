@@ -9,14 +9,13 @@ categories:
 tags: []
 subtitle: ''
 summary: ''
-authors: []
+authors: [Steven]
 lastmod: '2021-08-16T21:05:15-04:00'
 featured: no
 image:
-  caption: ''
+  caption: 'LandscapeMetrics'
   focal_point: ''
-  preview_only: no
-projects: []
+projects: [Mapping]
 ---
 #### *still work in progress*
 
