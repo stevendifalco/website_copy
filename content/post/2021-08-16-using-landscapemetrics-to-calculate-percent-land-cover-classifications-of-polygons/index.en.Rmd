@@ -20,7 +20,7 @@ projects: []
 ---
 #### *still work in progress*
 
-#### I previously used the program FRAGSTATS a few times while in graduate school but never quite got the hang of it. Instead of struggling with FRAGSTATS, a friend and collegue [Nick Yarmey](https://nicholasyarmey.weebly.com/) used the LandscapeMetrics package to do the same calculations. Two years later, I finally found some time to play around with it and try it out. Check out [this post](https://cran.r-project.org/web/packages/landscapemetrics/vignettes/getstarted.html) if you want to get into the details of how landscape metrics functions. 
+#### I previously used the program FRAGSTATS a few times while in graduate school but never quite got the hang of it. Instead of struggling with FRAGSTATS, a friend and colleague [Nick Yarmey](https://nicholasyarmey.weebly.com/) used the LandscapeMetrics package to do the same calculations. Two years later, I finally found some time to play around with it and try it out. Check out [this post](https://cran.r-project.org/web/packages/landscapemetrics/vignettes/getstarted.html) if you want to get into the details of how landscape metrics functions. 
 
 ```{r include=FALSE}
 library(tidyverse)
@@ -68,10 +68,10 @@ nlcd <- raster("NLCD_Clipped.tif")
 
 ```
 
-##### To mitigate problems with the projections not lining up, use spTransform to match datasets. Afterwards, the next steps will calculate the percentage of each land cover in the raster. I pivot the table and reame the coloumns so it's easier to understand the output of this calculation.
+##### To mitigate problems with the projections not lining up, use spTransform to match datasets. Afterwards, the next steps will calculate the percentage of each land cover in the raster. I pivot the table and rename the columns so it's easier to understand the output of this calculation.
 
 ```{r}
-#match the spatial projectsion between RSPP and NLCD dataset 
+#match the spatial projectsion between shapefile and NLCD dataset 
 rspp <- spTransform(rspp, proj4string(nlcd))
 
 #calculates % land cover for each type in polygon extent
@@ -101,11 +101,12 @@ map <- ggplot() +
   theme_minimal()
 ```
 
-##### Unfortunately, this shapefile had multiple small slivers in it. There are multiple roads surrounding this property and it is made up of multiple tax parcels, which caused this issue. Not a problem, we'll work with it as it is for now.
+##### Unfortunately, this shapefile had multiple small slivers in it. There are multiple roads surrounding this property and it is made up of multiple tax parcels, which caused this issue. Not really a bad problem, we'll work with it as it is for now.
 ```{r}
 print(map)
 ```
 
+##### To calculate the percentage of each land cover, per unit of the park, we'll use the code below. Pivoting the table is necessary to reconfigure the data so that each row is only one of the park units. The map is colored by the percentage of 'Deciduous' forests of each area.
 
 ```{r}
 #calculates % land cover for each type in polygon extent
@@ -130,10 +131,17 @@ nlcd_rspp <- inner_join(rspp_cast, nlcd_wide, by= c("ID"="plot_id"))
 nlcd_rspp <- nlcd_rspp[nlcd_wide$percentage_inside > 0]
 
 map <- ggplot() + 
-  geom_sf(data = nlcd_rspp, size = 1, fill = nlcd_rspp$percentage_inside) + 
-  scale_fill_binned() +
+  geom_sf(data = nlcd_rspp, size = 1, color = nlcd_rspp$percentage_inside, fill = nlcd_rspp$percentage_inside) + 
   ggtitle("RSPP Map") + 
   coord_sf() +
   theme_minimal()
-print(map)
+```
+
+
+
+```{r}
+ggplot(nlcd_rspp) +
+  geom_sf(aes(fill = Deciduous)) +
+  scale_fill_viridis_c(option = "B")
+
 ```
