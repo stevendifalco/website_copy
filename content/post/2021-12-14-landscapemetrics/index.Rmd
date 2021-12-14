@@ -1,21 +1,23 @@
 ---
-title: "Using LandscapeMetrics to Calculate Percent Land Cover Classifications of Polygons"
-author: "Steven DiFalco"
-date: '2021-08-16'
+title: Landscape Metrics and Percent Land Use of Polygons
+author: ''
+date: '2021-12-14'
+slug: landscapeMetrics
 categories:
-- land use
-- landscape metrics
-featured: no
-image:
-  caption: LandscapeMetrics
-  focal_point: ''
-lastmod: '2021-08-16T21:05:15-04:00'
-projects: Mapping
-slug: landscapemetrics-to-calculate-percent-land-cover-classifications-of-polygons
+  - land use
+  - post
+tags:
+  - landscape ecology
 subtitle: ''
 summary: ''
-tags: []
-authors: Steven
+authors: []
+lastmod: '2021-12-14T15:36:54-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
 ---
 #### *still work in progress*
 
