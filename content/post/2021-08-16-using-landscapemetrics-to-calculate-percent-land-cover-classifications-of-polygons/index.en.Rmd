@@ -133,8 +133,3 @@ deciduous<- ggplot(nlcd_rspp) +
 print(deciduous)
 ```
 
-
-
-```{r}
-
-```
