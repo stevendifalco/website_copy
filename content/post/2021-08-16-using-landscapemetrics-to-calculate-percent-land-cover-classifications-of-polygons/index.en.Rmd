@@ -1,21 +1,21 @@
 ---
-title: Using LandscapeMetrics to Calculate Percent Land Cover Classifications of Polygons
-author: Steven DiFalco
+title: "Using LandscapeMetrics to Calculate Percent Land Cover Classifications of Polygons"
+author: "Steven DiFalco"
 date: '2021-08-16'
-slug: landscapemetrics-to-calculate-percent-land-cover-classifications-of-polygons
 categories:
-  - land use
-  - landscape metrics
-tags: []
-subtitle: ''
-summary: ''
-authors: [Steven]
-lastmod: '2021-08-16T21:05:15-04:00'
+- land use
+- landscape metrics
 featured: no
 image:
-  caption: 'LandscapeMetrics'
+  caption: LandscapeMetrics
   focal_point: ''
-projects: [Mapping]
+lastmod: '2021-08-16T21:05:15-04:00'
+projects: Mapping
+slug: landscapemetrics-to-calculate-percent-land-cover-classifications-of-polygons
+subtitle: ''
+summary: ''
+tags: []
+authors: Steven
 ---
 #### *still work in progress*
 
@@ -82,7 +82,7 @@ head(rspp_nlcd)
 ##### LandscapeMetric analyzes each polygon seperately for each class in the raster. Since the shapefile was a multipolygon, the tool automatically assigned a random number to each of my polygons (plot_id above). Seeing this, I'll go back and add my own ID so I know which is which polygon from the analysis. I have to convert the shapefile to be an sf object to use st_cast() to extract the multipolygon to singular polygons. Then assign a unique # to each polygon.  
 
 
-```{r}
+```{r eval= FALSE}
 # convert shapefile to sf object
 rspp_sf <- as(rspp, "sf")
 
