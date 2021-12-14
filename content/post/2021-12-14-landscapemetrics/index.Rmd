@@ -54,7 +54,9 @@ map <- ggplot(rspp, aes(x = long, y = lat, group = group)) +
 
 print(map)
 ```
+
 ##### NLCD 2016 raster will be used for the land classifications. 
+
 ```{r}
 nlcd <- raster("NLCD_Clipped.tif")
 
