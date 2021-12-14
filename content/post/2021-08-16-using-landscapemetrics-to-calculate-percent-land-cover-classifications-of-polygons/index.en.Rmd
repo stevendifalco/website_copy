@@ -41,11 +41,8 @@ library(janitor)
 
 ##### To keep things simple, I'm going to use a shapefile with only one property in it. I used to work at Rockefeller State Park Preserve (RSPP) and thought it would be interesting to see what the different land cover classifications come up. The property includes fields, forests, and various wetlands.
 
-```{r}
-#rspp <- st_read("RSPP.shp") %>% st_transform(4326)
-
+```{r message= FALSE}
 rspp <- readOGR("RSPP.shp")
-
 
 map <- ggplot(rspp, aes(x = long, y = lat, group = group)) +
   geom_polygon(color = "black", size = 0.1, fill = "lightgrey") +
@@ -60,16 +57,16 @@ print(map)
 nlcd <- raster("NLCD_Clipped.tif")
 
 ## get information about the raster itself
-#check_landscape(nlcd) # get info on raster object
+#check_landscape(nlcd) 
 
-## to speed up the processes, you can clip the raster to the extent of the shapefile. I already did this step previously.
-#nlcd_cropped <- crop(nlcd, esmts)
+## to speed up the processes, you can clip the raster to the extent of the shapefile. I already did this step previously but the code would be.
+#nlcd_cropped <- crop(nlcd, *area wanted to crop to*)
 
 ```
 
 ##### To mitigate problems with the projections not lining up, use spTransform to match datasets. Afterwards, the next steps will calculate the percentage of each land cover in the raster. I pivot the table and rename the columns so it's easier to understand the output of this calculation.
 
-```{r}
+```{r warning=FALSE}
 #match the spatial projectsion between shapefile and NLCD dataset 
 rspp <- spTransform(rspp, proj4string(nlcd))
 
@@ -82,7 +79,7 @@ head(rspp_nlcd)
 ##### LandscapeMetric analyzes each polygon seperately for each class in the raster. Since the shapefile was a multipolygon, the tool automatically assigned a random number to each of my polygons (plot_id above). Seeing this, I'll go back and add my own ID so I know which is which polygon from the analysis. I have to convert the shapefile to be an sf object to use st_cast() to extract the multipolygon to singular polygons. Then assign a unique # to each polygon.  
 
 
-```{r eval= FALSE}
+```{r warning=FALSE}
 # convert shapefile to sf object
 rspp_sf <- as(rspp, "sf")
 
@@ -107,7 +104,7 @@ print(map)
 
 ##### To calculate the percentage of each land cover, per unit of the park, we'll use the code below. Pivoting the table is necessary to reconfigure the data so that each row is only one of the park units. The map is colored by the percentage of 'Deciduous' forests of each area.
 
-```{r}
+```{r warning=FALSE}
 #calculates % land cover for each type in polygon extent
 rspp_nlcd <- sample_lsm(landscape = nlcd, y= rspp_cast, plot_id = rspp_cast$ID, what= c("lsm_c_pland"))
 
@@ -129,18 +126,15 @@ nlcd_rspp <- inner_join(rspp_cast, nlcd_wide, by= c("ID"="plot_id"))
 
 nlcd_rspp <- nlcd_rspp[nlcd_wide$percentage_inside > 0]
 
-map <- ggplot() + 
-  geom_sf(data = nlcd_rspp, size = 1, color = nlcd_rspp$percentage_inside, fill = nlcd_rspp$percentage_inside) + 
-  ggtitle("RSPP Map") + 
-  coord_sf() +
-  theme_minimal()
+deciduous<- ggplot(nlcd_rspp) +
+  geom_sf(aes(fill = Deciduous)) +
+  scale_fill_viridis_c(option = "B")
+
+print(deciduous)
 ```
 
 
 
 ```{r}
-ggplot(nlcd_rspp) +
-  geom_sf(aes(fill = Deciduous)) +
-  scale_fill_viridis_c(option = "B")
 
 ```
