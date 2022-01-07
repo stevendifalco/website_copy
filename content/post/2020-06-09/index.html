@@ -4,6 +4,8 @@ title: Walkability
 authors: [steven]
 summary: tidy tuesday walkability
 date: '2020-06-09'
+projects:
+  - TidyTuesday
 categories:
   - tidytuesday
   - data visualization
@@ -21,18 +23,14 @@ image:
 <h3>After some cleaning of the data, we can see that in New York and Vermont a decent percentage of communters walk to work. Interesting to see that Vermont commuters also bike to work more frequently.</h3>
 <pre class="r"><code>#Modes of travling biking and walking ACS data
 commute_mode &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-11-05/commute.csv&quot;)</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   city = col_character(),
-##   state = col_character(),
-##   city_size = col_character(),
-##   mode = col_character(),
-##   n = col_double(),
-##   percent = col_double(),
-##   moe = col_double(),
-##   state_abb = col_character(),
-##   state_region = col_character()
-## )</code></pre>
+<pre><code>## Rows: 3496 Columns: 9</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (6): city, state, city_size, mode, state_abb, state_region
+## dbl (3): n, percent, moe</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>commute_mode$state &lt;- recode(commute_mode$state, 
                        &quot;Ca&quot;= &quot;California&quot;,
                        &quot;Massachusett&quot; = &quot;Massachusetts&quot;)
@@ -43,7 +41,7 @@ commute_summary &lt;- commute_mode %&gt;%
   mutate(state = tolower(state)) %&gt;%
   group_by(state, mode) %&gt;%
   summarise(Percent = mean(percent))</code></pre>
-<pre><code>## `summarise()` regrouping output by &#39;state&#39; (override with `.groups` argument)</code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;state&#39;. You can override using the `.groups` argument.</code></pre>
 <pre class="r"><code>#retrieve state geo data
 states_map &lt;- map_data(&quot;state&quot;)
 
@@ -62,9 +60,9 @@ commute_summary %&gt;%
   labs(fill = &quot;Percent of commuters&quot;, title= &quot;The Northeast Loves Walking&quot;)+
   theme(legend.position=&quot;bottom&quot;, plot.title = element_text(hjust =0.5), 
         strip.text.x = element_text(size = 12))#changes text of mode</code></pre>
-<p><img src="/post/2020-06-09/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <pre class="r"><code>commute_summary</code></pre>
-<pre><code>## # A tibble: 102 x 3
+<pre><code>## # A tibble: 102 × 3
 ## # Groups:   state [51]
 ##    state      mode  Percent
 ##    &lt;chr&gt;      &lt;chr&gt;   &lt;dbl&gt;
@@ -97,7 +95,7 @@ commute_summary %&gt;%
   labs(fill = &quot;Percent of commuters&quot;, title= &quot;The Southeast Hates Walking&quot;)+
   theme(legend.position=&quot;bottom&quot;, plot.title = element_text(hjust =0.5), 
         strip.text.x = element_text(size = 12))</code></pre>
-<p><img src="/post/2020-06-09/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 <div id="to-simplifiy-the-color-scheme-i-gropued-the-percentage-of-walking.-it-is-surprising-to-see-that-west-virginia-seems-to-be-a-big-walking-to-work-state." class="section level3">
 <h3>To simplifiy the color scheme, I gropued the percentage of walking. It is surprising to see that West Virginia seems to be a big walking-to-work state.</h3>
@@ -126,5 +124,5 @@ commute_Walk %&gt;%
   theme_void()+
   labs(fill = &quot;Percent of commuters&quot;, title= &quot;Walking to Work by State&quot;)+
   theme(legend.position=&quot;bottom&quot;, plot.title = element_text(hjust =0.5))</code></pre>
-<p><img src="/post/2020-06-09/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
