@@ -10,7 +10,7 @@ authors:
 superuser: true
 
 # Role/position
-role: Landscape Ecologist and Geographer
+role: Land Project Coordinator
 
 # Organizations/Affiliations
 organizations:

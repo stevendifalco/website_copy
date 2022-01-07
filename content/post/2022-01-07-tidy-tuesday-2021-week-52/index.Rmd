@@ -1,0 +1,73 @@
+---
+title: Tidy Tuesday 2021 Week 52
+author: Steven DiFalco
+date: '2022-01-07'
+slug: tidy-tuesday-2021-week-52
+categories:
+  - data visualization
+  - TidyTuesday
+tags:
+  - data visualizations
+  - TidyTuesday
+subtitle: ''
+summary: ''
+authors: []
+projects: [TidyTuesday]
+lastmod: '2022-01-07T16:04:23-05:00'
+featured: no
+draft: no
+disable_jquery: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+---
+### This is my contribution for #TidyTuesday, after a long time of not participating.
+
+### I created an interactive plot using `ggplot` and `plotly` packages that compares the calories vs caffeine content of Starbucks drinks. 
+
+![](plotly.html)
+
+#### code below:
+```{r warning=FALSE}
+#TidyTuesday 2021, Week 52
+
+library(tidytuesdayR)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(htmlwidgets)
+
+#read in data
+tuesdata <- tidytuesdayR::tt_load('2021-12-21')
+
+#load data to starbucks variable
+starbucks <- tuesdata$starbucks
+
+#group by product name and create a max_cal to calories:
+starbucks <- starbucks %>%
+  group_by(product_name) %>%
+  mutate(max_serv_size = max(serv_size_m_l), max_cal = max(calories))
+
+#create dateframe with simplified starbucks data.
+plot_df <- starbucks %>%
+  filter(serv_size_m_l == max_serv_size & calories == max_cal) %>%
+  group_by(product_name) %>%
+  slice(1) %>%
+  filter(size != "1 scoop")
+
+#create plot for caffeine vs calories
+plot = ggplot(plot_df, aes(x=max_cal, y=caffeine_mg))+
+  geom_point(aes(color = product_name))+
+  labs(x= "Calories", y= "Caffeine(mg)", title= "Calories vs Caffeine content in Starbucks Drinks; Hover over point for details")+
+  theme(legend.position = "none")
+
+#create interactive plot
+plotly = ggplotly(plot)
+
+#save as html to view widget
+saveWidget(as_widget(plotly), "plotly.html",selfcontained = F )
+```
+
+
+
