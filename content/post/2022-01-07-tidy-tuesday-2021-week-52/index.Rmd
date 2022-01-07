@@ -1,33 +1,36 @@
 ---
-title: Tidy Tuesday 2021 Week 52
-author: Steven DiFalco
+title: "Tidy Tuesday 2021 Week 52"
+author: "Steven DiFalco"
 date: '2022-01-07'
-slug: tidy-tuesday-2021-week-52
-categories:
-  - data visualization
-  - TidyTuesday
-tags:
-  - data visualizations
-  - TidyTuesday
-subtitle: ''
-summary: ''
-authors: []
-projects: [TidyTuesday]
-lastmod: '2022-01-07T16:04:23-05:00'
-featured: no
-draft: no
+output:
+  html_document:
+    df_print: paged
 disable_jquery: no
+draft: no
+featured: no
 image:
   caption: ''
   focal_point: ''
   preview_only: no
+lastmod: '2022-01-07T16:04:23-05:00'
+categories:
+- data visualization
+- TidyTuesday
+projects: TidyTuesday
+slug: tidy-tuesday-2021-week-52
+subtitle: ''
+summary: ''
+tags:
+- data visualizations
+- TidyTuesday
+authors: []
 ---
 ### This is my contribution for #TidyTuesday, after a long time of not participating.
 
 ### I created an interactive plot using `ggplot` and `plotly` packages that compares the calories vs caffeine content of Starbucks drinks. 
 
 #### code below:
-```{r warning=FALSE, eval=FALSE, message=FALSE}
+```{r warning=FALSE, message=FALSE}
 #TidyTuesday 2021, Week 52
 
 library(tidytuesdayR)
