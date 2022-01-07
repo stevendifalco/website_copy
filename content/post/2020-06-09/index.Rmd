@@ -5,7 +5,7 @@ authors: [steven]
 summary: tidy tuesday walkability
 date: '2020-06-09'
 projects:
-  - TidyTuesday
+  - Tidy Tuesday
 categories:
   - tidytuesday
   - data visualization
