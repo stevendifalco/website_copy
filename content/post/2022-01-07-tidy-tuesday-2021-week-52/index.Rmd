@@ -68,10 +68,10 @@ saveWidget(as_widget(plotly), "plotly.html",selfcontained = F )
 
 ```
 
-```{r}
+```{r echo=FALSE}
 #embed plotly figure
 htmltools::tags$iframe(
-  src=file.path(getwd(),"plotly.html"),
+  src=file.path("https://github.com/stevendifalco/website_copy/blob/master/content/post/2022-01-07-tidy-tuesday-2021-week-52/plotly.html"),
   width="100%",
   height="600",
   scrolling="no",
