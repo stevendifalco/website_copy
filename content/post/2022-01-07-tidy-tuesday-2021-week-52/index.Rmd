@@ -26,10 +26,8 @@ image:
 
 ### I created an interactive plot using `ggplot` and `plotly` packages that compares the calories vs caffeine content of Starbucks drinks. 
 
-![](plotly.html){width=100%}
-
 #### code below:
-```{r warning=FALSE, eval=FALSE}
+```{r warning=FALSE, message=FALSE}
 #TidyTuesday 2021, Week 52
 
 library(tidytuesdayR)
@@ -68,6 +66,8 @@ plotly = ggplotly(plot)
 #save as html to view widget
 saveWidget(as_widget(plotly), "plotly.html",selfcontained = F )
 ```
-
+```{r}
+ggplotly(plot)
+```
 
 
