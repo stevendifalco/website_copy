@@ -30,45 +30,21 @@ image:
 </div>
 <div id="i-created-an-interactive-plot-using-ggplot-and-plotly-packages-that-compares-the-calories-vs-caffeine-content-of-starbucks-drinks." class="section level3">
 <h3>I created an interactive plot using <code>ggplot</code> and <code>plotly</code> packages that compares the calories vs caffeine content of Starbucks drinks.</h3>
-<p><embed src="plotly.html" /></p>
+<p><embed src="plotly.html" style="width:100.0%" /></p>
 <div id="code-below" class="section level4">
 <h4>code below:</h4>
 <pre class="r"><code>#TidyTuesday 2021, Week 52
 
 library(tidytuesdayR)
-library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(ggplot2)
-library(plotly)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;plotly&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:ggplot2&#39;:
-## 
-##     last_plot</code></pre>
-<pre><code>## The following object is masked from &#39;package:stats&#39;:
-## 
-##     filter</code></pre>
-<pre><code>## The following object is masked from &#39;package:graphics&#39;:
-## 
-##     layout</code></pre>
-<pre class="r"><code>library(htmlwidgets)
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(htmlwidgets)
 
 #read in data
-tuesdata &lt;- tidytuesdayR::tt_load(&#39;2021-12-21&#39;)</code></pre>
-<pre><code>## --- Compiling #TidyTuesday Information for 2021-12-21 ----</code></pre>
-<pre><code>## --- There is 1 file available ---</code></pre>
-<pre><code>## --- Starting Download ---</code></pre>
-<pre><code>## 
-##  Downloading file 1 of 1: `starbucks.csv`</code></pre>
-<pre><code>## --- Download complete ---</code></pre>
-<pre class="r"><code>#load data to starbucks variable
+tuesdata &lt;- tidytuesdayR::tt_load(&#39;2021-12-21&#39;)
+
+#load data to starbucks variable
 starbucks &lt;- tuesdata$starbucks
 
 #group by product name and create a max_cal to calories:
