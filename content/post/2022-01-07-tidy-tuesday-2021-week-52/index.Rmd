@@ -27,7 +27,7 @@ image:
 ### I created an interactive plot using `ggplot` and `plotly` packages that compares the calories vs caffeine content of Starbucks drinks. 
 
 #### code below:
-```{r warning=FALSE, message=FALSE}
+```{r warning=FALSE, eval=FALSE, message=FALSE}
 #TidyTuesday 2021, Week 52
 
 library(tidytuesdayR)
@@ -66,7 +66,10 @@ plotly = ggplotly(plot)
 #save as html to view widget
 saveWidget(as_widget(plotly), "plotly.html",selfcontained = F )
 
-#embed into this post
+```
+
+```{r}
+#embed plotly figure
 htmltools::tags$iframe(
   src=file.path(getwd(),"plotly.html"),
   width="100%",
@@ -76,6 +79,3 @@ htmltools::tags$iframe(
   frameBorder="0"
 )
 ```
-
-
-

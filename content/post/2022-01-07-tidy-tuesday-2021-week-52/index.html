@@ -41,10 +41,9 @@ library(plotly)
 library(htmlwidgets)
 
 #read in data
-tuesdata &lt;- tidytuesdayR::tt_load(&#39;2021-12-21&#39;)</code></pre>
-<pre><code>## 
-##  Downloading file 1 of 1: `starbucks.csv`</code></pre>
-<pre class="r"><code>#load data to starbucks variable
+tuesdata &lt;- tidytuesdayR::tt_load(&#39;2021-12-21&#39;)
+
+#load data to starbucks variable
 starbucks &lt;- tuesdata$starbucks
 
 #group by product name and create a max_cal to calories:
@@ -69,9 +68,8 @@ plot = ggplot(plot_df, aes(x=max_cal, y=caffeine_mg))+
 plotly = ggplotly(plot)
 
 #save as html to view widget
-saveWidget(as_widget(plotly), &quot;plotly.html&quot;,selfcontained = F )
-
-#embed into this post
+saveWidget(as_widget(plotly), &quot;plotly.html&quot;,selfcontained = F )</code></pre>
+<pre class="r"><code>#embed plotly figure
 htmltools::tags$iframe(
   src=file.path(getwd(),&quot;plotly.html&quot;),
   width=&quot;100%&quot;,
