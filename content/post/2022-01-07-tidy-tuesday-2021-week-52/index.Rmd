@@ -65,9 +65,17 @@ plotly = ggplotly(plot)
 
 #save as html to view widget
 saveWidget(as_widget(plotly), "plotly.html",selfcontained = F )
+
+#embed into this post
+htmltools::tags$iframe(
+  src=file.path(getwd(),"plotly.html"),
+  width="100%",
+  height="600",
+  scrolling="no",
+  seamless="seamless",
+  frameBorder="0"
+)
 ```
-```{r}
-ggplotly(plot)
-```
+
 
 
