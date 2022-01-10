@@ -33,6 +33,10 @@ authors: []
 </div>
 <div id="i-created-an-interactive-plot-using-ggplot-and-plotly-packages-that-compares-the-calories-vs-caffeine-content-of-starbucks-drinks.-its-not-functioning-to-add-to-this-blog-post-so-ill-keep-trying-to-figure-that-out." class="section level3">
 <h3>I created an interactive plot using <code>ggplot</code> and <code>plotly</code> packages that compares the calories vs caffeine content of Starbucks drinks. It’s not functioning to add to this blog post, so I’ll keep trying to figure that out.</h3>
+<div class="figure">
+<img src="feature.png" alt="Calories vs Caffeine of drinks" style="width:50.0%" />
+<p class="caption">Calories vs Caffeine of drinks</p>
+</div>
 <div id="code-below" class="section level4">
 <h4>code below:</h4>
 <pre class="r"><code>#TidyTuesday 2021, Week 52
@@ -44,10 +48,9 @@ library(plotly)
 library(htmlwidgets)
 
 #read in data
-tuesdata &lt;- tidytuesdayR::tt_load(&#39;2021-12-21&#39;)</code></pre>
-<pre><code>## 
-##  Downloading file 1 of 1: `starbucks.csv`</code></pre>
-<pre class="r"><code>#load data to starbucks variable
+tuesdata &lt;- tidytuesdayR::tt_load(&#39;2021-12-21&#39;)
+
+#load data to starbucks variable
 starbucks &lt;- tuesdata$starbucks
 
 #group by product name and create a max_cal to calories:
@@ -63,18 +66,18 @@ plot_df &lt;- starbucks %&gt;%
   filter(size != &quot;1 scoop&quot;)
 
 #create plot for caffeine vs calories
-plot = ggplot(plot_df, aes(x=max_cal, y=caffeine_mg))+
-  geom_point(aes(color = product_name))+
-  labs(x= &quot;Calories&quot;, y= &quot;Caffeine(mg)&quot;, title= &quot;Calories vs Caffeine content in Starbucks Drinks; Hover over point for details&quot;)+
-  theme(legend.position = &quot;none&quot;)
-
+a = ggplot(plot_df, aes(x=max_cal, y=caffeine_mg))+
+  geom_point(aes(color = max_cal))+
+  scale_color_gradient2(low=&quot;green&quot;, mid = &quot;grey&quot;, high = &quot;red&quot;, midpoint = 300)+
+  labs(x= &quot;Calories&quot;, y= &quot;Caffeine(mg)&quot;, title= &quot;Calories vs Caffeine content in Starbucks Drinks&quot;)+
+  geom_mark_rect(aes(filter = max_cal &gt; 600, label = &quot;Hot chocolate drinks&quot;), alpha=0, show.legend = F, color = &quot;brown&quot;) +
+  geom_mark_rect(aes(filter = caffeine_mg &lt; 45 &amp; max_cal &lt; 10, label = &quot;Caffeine free teas&quot;), alpha=0, show.legend = F, color = &quot;green&quot;)+
+  theme_classic()
 
 #create interactive plot
-#interactive = ggplotly(plot)
+interactive = ggplotly(a)
 
 #save as html to view widget
-#saveWidget(as_widget(interactive), &quot;plotly.html&quot;,selfcontained = F )</code></pre>
-<pre class="r"><code>print(plot)</code></pre>
-<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+saveWidget(as_widget(a), &quot;plotly.html&quot;,selfcontained = F )</code></pre>
 </div>
 </div>

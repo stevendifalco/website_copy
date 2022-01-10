@@ -29,8 +29,10 @@ authors: []
 
 ### I created an interactive plot using `ggplot` and `plotly` packages that compares the calories vs caffeine content of Starbucks drinks. It's not functioning to add to this blog post, so I'll keep trying to figure that out. 
 
+![Calories vs Caffeine of drinks](feature.png){width=50%}
+
 #### code below:
-```{r warning=FALSE, message=FALSE}
+```{r eval=FALSE, warning=FALSE, message=FALSE}
 #TidyTuesday 2021, Week 52
 
 library(tidytuesdayR)
@@ -58,19 +60,19 @@ plot_df <- starbucks %>%
   filter(size != "1 scoop")
 
 #create plot for caffeine vs calories
-plot = ggplot(plot_df, aes(x=max_cal, y=caffeine_mg))+
-  geom_point(aes(color = product_name))+
-  labs(x= "Calories", y= "Caffeine(mg)", title= "Calories vs Caffeine content in Starbucks Drinks; Hover over point for details")+
-  theme(legend.position = "none")
-
+a = ggplot(plot_df, aes(x=max_cal, y=caffeine_mg))+
+  geom_point(aes(color = max_cal))+
+  scale_color_gradient2(low="green", mid = "grey", high = "red", midpoint = 300)+
+  labs(x= "Calories", y= "Caffeine(mg)", title= "Calories vs Caffeine content in Starbucks Drinks")+
+  geom_mark_rect(aes(filter = max_cal > 600, label = "Hot chocolate drinks"), alpha=0, show.legend = F, color = "brown") +
+  geom_mark_rect(aes(filter = caffeine_mg < 45 & max_cal < 10, label = "Caffeine free teas"), alpha=0, show.legend = F, color = "green")+
+  theme_classic()
 
 #create interactive plot
-#interactive = ggplotly(plot)
+interactive = ggplotly(a)
 
 #save as html to view widget
-#saveWidget(as_widget(interactive), "plotly.html",selfcontained = F )
+saveWidget(as_widget(a), "plotly.html",selfcontained = F )
 
 ```
-```{r}
-print(plot)
-```
+
