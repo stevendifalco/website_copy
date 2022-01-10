@@ -27,7 +27,7 @@ authors: []
 ---
 ### This is my contribution for #TidyTuesday, after a long time of not participating.
 
-### I created an interactive plot using `ggplot` and `plotly` packages that compares the calories vs caffeine content of Starbucks drinks. 
+### I created an interactive plot using `ggplot` and `plotly` packages that compares the calories vs caffeine content of Starbucks drinks. It's not functioning to add to this blog post, so I'll keep trying to figure that out. 
 
 #### code below:
 ```{r warning=FALSE, message=FALSE}
@@ -63,22 +63,14 @@ plot = ggplot(plot_df, aes(x=max_cal, y=caffeine_mg))+
   labs(x= "Calories", y= "Caffeine(mg)", title= "Calories vs Caffeine content in Starbucks Drinks; Hover over point for details")+
   theme(legend.position = "none")
 
+
 #create interactive plot
-plotly = ggplotly(plot)
+#interactive = ggplotly(plot)
 
 #save as html to view widget
-saveWidget(as_widget(plotly), "plotly.html",selfcontained = F )
+#saveWidget(as_widget(interactive), "plotly.html",selfcontained = F )
 
 ```
-
-```{r echo=FALSE}
-#embed plotly figure
-htmltools::tags$iframe(
-  src=file.path(getwd(),"plotly.html"),
-  width="100%",
-  height="600",
-  scrolling="no",
-  seamless="seamless",
-  frameBorder="0"
-)
+```{r}
+print(plot)
 ```
