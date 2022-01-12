@@ -29,7 +29,7 @@ authors: []
 
 ### I created an interactive plot using `ggplot` and `plotly` packages that compares the calories vs caffeine content of Starbucks drinks. It's not functioning to add to this blog post, so I'll keep trying to figure that out. 
 
-![Calories vs Caffeine of drinks](feature.png){width=50%}
+![](feature.png)
 
 #### code below:
 ```{r eval=FALSE, warning=FALSE, message=FALSE}

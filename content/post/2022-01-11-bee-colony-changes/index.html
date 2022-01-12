@@ -1,0 +1,70 @@
+---
+title: Bee Colony Changes - Tidy Tuesday 2022
+author: Steven DiFalco
+date: '2022-01-11'
+slug: bee-colony-changes
+categories:
+  - TidyTuesday
+  - data visualization
+tags:
+  - TidyTuesday
+subtitle: ''
+summary: ''
+authors: []
+projects: [Tidy Tuesday]
+lastmod: '2022-01-11T21:04:42-05:00'
+featured: no
+draft: no
+disable_jquery: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+---
+
+
+
+<h2>
+This week for ‘#TidyTuesday’ used bee colony data collected by USDA at the state level for the US. Check it out <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-01-11">here</a>
+</h2>
+<h3>
+I decided to look at the average percent of colony decline in each state, for the last four years. The subsequent code below shows the details of how this was done.
+</h3>
+<p><img src="featured.png" /></p>
+<pre class="r"><code># Tidy Tuesday Week 2, 2022
+# Bee Data
+
+library(tidytuesdayR)
+library(tidyverse)
+library(maps)
+library(viridis)
+library(ggplot2)
+
+#read in data
+tuesdata &lt;- tidytuesdayR::tt_load(&#39;2022-01-11&#39;)
+
+colony &lt;- readr::read_csv(&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-01-11/colony.csv&#39;)
+stressor &lt;- readr::read_csv(&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-01-11/stressor.csv&#39;)
+
+#retrieve state geo data
+states_map &lt;- map_data(&quot;state&quot;)
+
+
+#calculate mean of colonies lost per state 2018-2021
+col_mean &lt;- colony %&gt;%
+  mutate(state = tolower(state))%&gt;%
+  filter(year &gt; 2017)%&gt;%
+  group_by(state, year)%&gt;%
+  summarise(col_loss=mean(na.omit(colony_lost_pct))) #na.omit critical since missing values in one month duration causes errors
+
+#facet wrapped plot
+col_mean %&gt;%
+  ggplot(aes(map_id= state)) +
+  geom_map(aes(fill=col_loss), map = states_map)+
+  expand_limits(x= states_map$long, y=states_map$lat)+
+  coord_map(&quot;polyconic&quot;) +
+  scale_fill_viridis(option = &quot;magma&quot;, direction = -1) +
+  theme_void()+
+  facet_wrap(vars(year))+
+  labs(fill = &quot;Percentage of Colony Lost&quot;, title= &quot;Average Percent Bee Colony Lost Per Year&quot;)+
+  theme(legend.position=&quot;bottom&quot;, plot.title = element_text(hjust =0.5))</code></pre>
