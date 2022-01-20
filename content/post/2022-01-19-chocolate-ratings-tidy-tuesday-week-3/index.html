@@ -1,0 +1,178 @@
+---
+title: Chocolate Ratings-Tidy Tuesday Week 3
+author: Steven DiFalco
+date: '2022-01-19'
+slug: chocolate-ratings-tidy-tuesday-week-3
+categories:
+  - TidyTuesday
+  - data visualization
+tags:
+  - data visualizations
+subtitle: ''
+summary: ''
+authors: []
+projects: []
+lastmod: '2022-01-19T18:45:40-05:00'
+featured: no
+draft: no
+disable_jquery: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+---
+
+
+
+<h2>
+This week for <code>#TidyTuesday</code> the dataset comes from <a href="http://flavorsofcacao.com/chocolate_database.html">Flavors of Cacao</a>. Interesting set of information on chocolate ratings from across the world. Code below the figures.
+</h2>
+<h3>
+I first wanted to look at the data statistically. I was curious if percent of cocoa in the chocolate was related to the rating. Looks like there is a significant relationship.
+</h3>
+<p><img src="lm.png" /></p>
+<h3>
+I then took a what other factors are possibly influencing the rating, including cocoa percent and different ingredients in the chocolate. Containing vanilla and cocoa butter are possibly influencing the chocolate ratings.
+</h3>
+<p><img src="regression.png" /></p>
+<h3>
+To look at the data differently, I plotted the average rating of the chocolate based on it’s origins. There were multiple chocolates that were <code>blends</code> from different countries, which do not factor into this. There is also an error in the mapping which left some countries out.
+</h3>
+<p><img src="featured.png" /></p>
+<pre class="r"><code># TidyTuesday Week 3, 2022
+# Chocolate Flavor Data
+
+library(tidytuesdayR)
+library(tidyverse)
+library(ggplot2)
+library(sjPlot)
+library(RColorBrewer)
+library(maps)
+
+#data
+tuesdata &lt;- tidytuesdayR::tt_load(&#39;2022-01-18&#39;)
+
+chocolate &lt;- tuesdata$chocolate
+
+#convert cocoa_percent to a numeric
+chocolate &lt;- chocolate %&gt;%
+  mutate(
+    cocoa_percent = str_extract(cocoa_percent, &quot;\\d+&quot;) %&gt;%
+      as.numeric()
+    )%&gt;%
+  mutate(country_of_bean_origin=
+           recode(country_of_bean_origin,
+                  &quot;Congo&quot;= &quot;Republic of Congo&quot;,
+                  &quot;DR Congo&quot;= &quot;Democratic Republic of the Congo&quot;)
+         )
+
+#parse out ingredients by name and assign them binary coding for presence/absence
+#from Jesus Castagnetto (https://github.com/jmcastagnetto/tidytuesday-kludges/blob/main/2022-01-18_chocolate/01-get-data.R)
+chocolate_df&lt;- chocolate %&gt;%
+   mutate(
+     n_ingredients = str_extract(ingredients, &quot;\\d&quot;) %&gt;% as.numeric(),
+     ingredients_list = str_extract(ingredients, &quot;[A-Za-z,*]+&quot;)
+     ) %&gt;%
+  separate_rows(
+    ingredients_list,
+    sep = &quot;,&quot;
+  ) %&gt;%
+  mutate(
+    ingredients_list = str_replace_all(
+      ingredients_list,
+      c(
+        &quot;^S\\*$&quot; = &quot;sweetener&quot;,
+        &quot;^S$&quot; = &quot;sugar&quot;,
+        &quot;C&quot; = &quot;cocoa_butter&quot;,
+        &quot;V&quot; = &quot;vanilla&quot;,
+        &quot;B&quot; = &quot;beans&quot;,
+        &quot;L&quot; = &quot;lecithin&quot;,
+        &quot;^Sa$&quot; = &quot;salt&quot;
+      )
+    ),
+    ingredients_list = replace_na(ingredients_list, &quot;unknown&quot;),
+    flag = 1
+  ) %&gt;%
+  pivot_wider(
+    names_from = ingredients_list,
+    values_from = flag,
+    values_fill = 0
+  )
+
+
+#simple plot of rating vs cocoa%
+graph &lt;- ggplot(chocolate_df, aes(x = cocoa_percent, y = rating)) +
+  geom_point() +
+  stat_smooth(method = &quot;lm&quot;, col = &quot;red&quot;)+
+  labs(x=&#39;Cocoa Percent&#39;, y=&#39;Rating&#39;, title=&#39;Linear Regression Plot&#39;) +
+  theme(plot.title = element_text(hjust=0.5, size=20, face=&#39;bold&#39;))+
+  theme_minimal()+
+  annotate(&quot;text&quot;, x = 45, y = 1.1, label = &quot;italic(R) ^ 2 == 0.021&quot;, parse= TRUE)
+graph
+
+
+#testing what predicts rating, if there are correlations
+model1 &lt;- lm(rating ~
+               cocoa_percent,
+             data= chocolate_df
+               )
+summary(rating)
+
+model2 &lt;- lm(rating ~
+                cocoa_percent+
+                sweetener+
+                sugar+
+                cocoa_butter+
+                vanilla+
+                beans+
+                lecithin+
+                salt,
+              data=chocolate_df)
+
+model3 &lt;- lm(rating ~
+                sweetener+
+                sugar+
+                cocoa_butter+
+                vanilla+
+                beans+
+                lecithin+
+                salt,
+              data=chocolate_df)
+
+#creating table to view results
+tab_model(model1, model2, model3,
+          dv.labels = c(&quot;Model 1&quot;, &quot;Model 2&quot;, &quot;Model 3&quot;),
+          show.ci= FALSE,show.est=F,
+          show.std=T, show.stat=T, show.p= TRUE, p.style = &quot;stars&quot;,
+          string.pred = &quot;Rating&quot;,
+          string.std=&quot;B&quot;, string.stat=&quot;p&quot;)
+
+
+
+
+#summarise by country
+chocolate_df2 &lt;- chocolate_df %&gt;%
+  group_by(country = country_of_bean_origin)%&gt;%
+  summarise(avg_rating=mean(na.omit(rating)),
+            avg_cocoa=mean(na.omit(cocoa_percent)))
+
+#brought in all country names due to error in making map with only those that export cocoa beans
+countries &lt;- read_csv(&quot;2022-01-18/countries.csv&quot;)
+
+chocolate_df2 &lt;- right_join(chocolate_df2, countries, by=&quot;country&quot;)
+
+#retrieve country geo data
+world &lt;- map_data(&quot;world2&quot;)%&gt;%
+  filter(region != &quot;Antarctica&quot;)
+
+#world map
+worldmap &lt;- chocolate_df2 %&gt;%
+  ggplot(aes(map_id=country))+
+  geom_map(aes(fill=avg_rating), map=world)+
+  expand_limits(x= world$long, y=world$lat)+
+  scale_fill_continuous(type = &quot;viridis&quot;)+
+  coord_map(&quot;mercator&quot;)+
+  labs(fill = &quot;Average Rating&quot;, title= str_wrap(&quot;Chocolate Producing Countries and Average Rating of their Chocolates&quot;, 30))+
+  theme(legend.position=&quot;bottom&quot;, plot.title = element_text(hjust =0.5))+
+  theme_void()
+ggsave(&quot;featured.png&quot;)</code></pre>
