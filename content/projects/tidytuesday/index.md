@@ -1,22 +1,20 @@
 ---
 title: TidyTuesday
 author: Steven DiFalco
-date: '2022-01-26'
+date: ''
 slug: tidytuesday
 categories: []
-tags: []
-subtitle: ''
+tags:["data visualization"]
 summary: ''
 authors: []
-lastmod: '2022-01-26T08:08:45-05:00'
-featured: no
+external_link: ''
 image:
   caption: ''
   focal_point: ''
   preview_only: no
-projects: ["tidytuesday"]
+url_code: ''
+url_pdf: ''
+url_slides: ''
+url_video: ''
+slides: ''
 ---
-
-
-
-
