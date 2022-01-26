@@ -4,7 +4,7 @@ author: Steven DiFalco
 date: ''
 slug: tidytuesday
 categories: []
-tags:[]
+tags: ["data visualization"]
 summary: ''
 authors: []
 external_link: ''
