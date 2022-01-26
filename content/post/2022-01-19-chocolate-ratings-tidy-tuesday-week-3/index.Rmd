@@ -29,11 +29,11 @@ image:
 
 <h3> I then took a what other factors are possibly influencing the rating, including cocoa percent and different ingredients in the chocolate. Containing vanilla and cocoa butter are possibly influencing the chocolate ratings. </h3> 
 
-![](regression.png)
+![](regression.png){width=100%, height=100%}
 
 <h3> To look at the data differently, I plotted the average rating of the chocolate based on it's origins. There were multiple chocolates that were `blends` from different countries, which do not factor into this. There is also an error in the mapping which left some countries out. </h3> 
 
-![](featured.png)
+![](featured.png){width=100%}
 
 
 
