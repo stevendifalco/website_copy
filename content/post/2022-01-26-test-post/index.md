@@ -8,8 +8,7 @@ tags: []
 subtitle: ''
 summary: ''
 authors: []
-projects: 
-  -tidytuesday
+projects: ["tidytuesday"]
 lastmod: '2022-01-26T21:13:24-05:00'
 featured: no
 draft: no
