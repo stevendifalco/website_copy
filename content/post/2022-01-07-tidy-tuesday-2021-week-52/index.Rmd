@@ -1,5 +1,5 @@
 ---
-title: "Tidy Tuesday 2021 Week 52"
+title: "Starbucks Tidy Tuesday 2021 Week 52"
 author: "Steven DiFalco"
 date: '2022-01-07'
 output:
@@ -16,7 +16,7 @@ lastmod: '2022-01-07T16:04:23-05:00'
 categories:
 - data visualization
 - TidyTuesday
-projects: [TidyTuesday]
+projects: ["TidyTuesday"]
 slug: tidy-tuesday-2021-week-52
 subtitle: ''
 summary: ''

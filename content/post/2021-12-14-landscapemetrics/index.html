@@ -4,8 +4,8 @@ author: ''
 date: '2021-12-14'
 slug: landscapeMetrics
 categories:
-  - land use
-  - post
+  - data visualization
+  - landscape
 tags:
   - landscape ecology
 subtitle: ''
@@ -41,7 +41,7 @@ projects: []
   theme_minimal()
 
 print(map)</code></pre>
-<p><img src="/post/2021-12-14-landscapemetrics/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 </div>
 <div id="nlcd-2016-raster-will-be-used-for-the-land-classifications." class="section level5">
 <h5>NLCD 2016 raster will be used for the land classifications.</h5>
@@ -62,7 +62,7 @@ rspp &lt;- spTransform(rspp, proj4string(nlcd))
 rspp_nlcd &lt;- sample_lsm(landscape = nlcd, y= rspp, what= c(&quot;lsm_c_pland&quot;))
 
 head(rspp_nlcd)</code></pre>
-<pre><code>## # A tibble: 6 x 8
+<pre><code>## # A tibble: 6 × 8
 ##   layer level class    id metric   value plot_id percentage_inside
 ##   &lt;int&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;    &lt;dbl&gt;   &lt;int&gt;             &lt;dbl&gt;
 ## 1     1 class    11    NA pland   3.32         1              99.9
@@ -93,7 +93,7 @@ map &lt;- ggplot() +
 <div id="unfortunately-this-shapefile-had-multiple-small-slivers-in-it.-there-are-multiple-roads-surrounding-this-property-and-it-is-made-up-of-multiple-tax-parcels-which-caused-this-issue.-not-really-a-bad-problem-well-work-with-it-as-it-is-for-now." class="section level5">
 <h5>Unfortunately, this shapefile had multiple small slivers in it. There are multiple roads surrounding this property and it is made up of multiple tax parcels, which caused this issue. Not really a bad problem, we’ll work with it as it is for now.</h5>
 <pre class="r"><code>print(map)</code></pre>
-<p><img src="/post/2021-12-14-landscapemetrics/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="to-calculate-the-percentage-of-each-land-cover-per-unit-of-the-park-well-use-the-code-below.-pivoting-the-table-is-necessary-to-reconfigure-the-data-so-that-each-row-is-only-one-of-the-park-units.-the-map-is-colored-by-the-percentage-of-deciduous-forests-of-each-area." class="section level5">
 <h5>To calculate the percentage of each land cover, per unit of the park, we’ll use the code below. Pivoting the table is necessary to reconfigure the data so that each row is only one of the park units. The map is colored by the percentage of ‘Deciduous’ forests of each area.</h5>
@@ -123,6 +123,6 @@ deciduous&lt;- ggplot(nlcd_rspp) +
   scale_fill_viridis_c(option = &quot;B&quot;)
 
 print(deciduous)</code></pre>
-<p><img src="/post/2021-12-14-landscapemetrics/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 </div>

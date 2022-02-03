@@ -4,8 +4,8 @@ author: ''
 date: '2021-12-14'
 slug: landscapeMetrics
 categories:
-  - land use
-  - post
+  - data visualization
+  - landscape
 tags:
   - landscape ecology
 subtitle: ''
