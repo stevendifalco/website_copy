@@ -29,10 +29,12 @@ authors: []
 
 ### I created an interactive plot using `ggplot` and `plotly` packages that compares the calories vs caffeine content of Starbucks drinks. It's not functioning to add to this blog post, so I'll keep trying to figure that out. 
 
+#### Link to interactive figure [interactive figure](plotly.html)
+
 ![](feature.png)
 
 #### code below:
-```{r eval=FALSE, warning=FALSE, message=FALSE}
+```{r eval=FALSE}
 #TidyTuesday 2021, Week 52
 
 library(tidytuesdayR)
@@ -40,6 +42,7 @@ library(dplyr)
 library(ggplot2)
 library(plotly)
 library(htmlwidgets)
+library(ggforce) #for geom_mark_rect
 
 #read in data
 tuesdata <- tidytuesdayR::tt_load('2021-12-21')
@@ -72,7 +75,7 @@ a = ggplot(plot_df, aes(x=max_cal, y=caffeine_mg))+
 interactive = ggplotly(a)
 
 #save as html to view widget
-saveWidget(as_widget(a), "plotly.html",selfcontained = F )
+saveWidget(interactive, "plotly.html", ,selfcontained = F)
 
 ```
 

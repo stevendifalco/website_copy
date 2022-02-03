@@ -33,7 +33,10 @@ authors: []
 </div>
 <div id="i-created-an-interactive-plot-using-ggplot-and-plotly-packages-that-compares-the-calories-vs-caffeine-content-of-starbucks-drinks.-its-not-functioning-to-add-to-this-blog-post-so-ill-keep-trying-to-figure-that-out." class="section level3">
 <h3>I created an interactive plot using <code>ggplot</code> and <code>plotly</code> packages that compares the calories vs caffeine content of Starbucks drinks. It’s not functioning to add to this blog post, so I’ll keep trying to figure that out.</h3>
+<div id="link-to-interactive-figure-interactive-figure" class="section level4">
+<h4>Link to interactive figure <a href="plotly.html">interactive figure</a></h4>
 <p><img src="feature.png" /></p>
+</div>
 <div id="code-below" class="section level4">
 <h4>code below:</h4>
 <pre class="r"><code>#TidyTuesday 2021, Week 52
@@ -43,6 +46,7 @@ library(dplyr)
 library(ggplot2)
 library(plotly)
 library(htmlwidgets)
+library(ggforce) #for geom_mark_rect
 
 #read in data
 tuesdata &lt;- tidytuesdayR::tt_load(&#39;2021-12-21&#39;)
@@ -75,6 +79,6 @@ a = ggplot(plot_df, aes(x=max_cal, y=caffeine_mg))+
 interactive = ggplotly(a)
 
 #save as html to view widget
-saveWidget(as_widget(a), &quot;plotly.html&quot;,selfcontained = F )</code></pre>
+saveWidget(interactive, &quot;plotly.html&quot;, ,selfcontained = F)</code></pre>
 </div>
 </div>
