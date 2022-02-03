@@ -29,15 +29,11 @@ image:
 #   Otherwise, set `projects = []`.
 projects: ["TidyTuesday"]
 ---
+This is my contribution to 2022, Week 4  [TidyTuesday](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-25/readme.md) using data from [Board Game Geek](https://www.kaggle.com/jvanelteren/boardgamegeek-reviews/version/3?select=2022-01-08.csv).
 
-
-
-
-
-### Code below
-
-# Tidy Tuesday Week 4
-
+Starting with the packages and cleaning up the data. Some games are associated with multiple `categories` of board games. I extracted out the first two categories listed into `cat_1` and `cat_2`. 
+```r
+# Tidy Tuesday 2022 Week 4
 library(tidytuesdayR)
 library(tidyverse)
 library(ggplot2)
@@ -56,11 +52,19 @@ details <- details %>%
   separate(col= boardgamecategory, into = c("cat_1", "cat_2"), sep = ",") %>%
   mutate(cat_1 = str_replace_all(cat_1, "\\'|\\[|\\]", ""),
          cat_2 = str_replace_all(cat_2, "\\'|\\[|\\]", "")) #removes '' and [] in categories
-
+         
 #quick count of games per category
 count <- details %>% count(cat_1)
+```r
 
+There were over 80 categories, many containing hundreds of different games!
 
+![head-count](head-count.png)
+
+I wanted to see what category has the top rated games. I grouped by `cat_1` then averaged the scorings for each category. The bar graph below shows the top 20 categories by average rating. 
+
+![average rating](top20.png)
+```r
 #change details primary to name to match join
 details <- details %>%
   mutate(name = primary)
@@ -83,8 +87,14 @@ ggplot(data = grouped, aes(x= reorder(category, avg_rating), y = avg_rating)) + 
   labs(title= "Top 20 board game categories by average rating", y= "average rating",x ="category") +
   theme_classic() #introduces a theme to the figure instead of the standard output
 ggsave("top.png")
+```r
 
-#top category over the years
+I then wanted to look at the data by number of new games created in the top 10 categories each year. Interestingly, there are many board games created in categories that aren't the highest rated. Lots of card games are created each year, but this is not at top rated category. 
+
+![number created yearly](featured.png)
+
+```r
+#group by top category over the years
 grouped2 <- joined %>%
   group_by(year, category = cat_1)%>%
   count(year, sort = TRUE) %>%
@@ -92,7 +102,7 @@ grouped2 <- joined %>%
   filter(year >"2011", year <"2022",
          n > 20)
 
-#facet warped plots
+#Create facet-wrapped figure using year as the category. 
 ggplot(data = grouped2, aes(x= reorder(category, n), y = n), fill = n) + #reorder makes bars descending order
   geom_bar(stat= "identity") +
   coord_flip() +#rotates graph
@@ -102,3 +112,4 @@ ggplot(data = grouped2, aes(x= reorder(category, n), y = n), fill = n) + #reorde
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"), text = element_text(size = 10))
 ggsave("years.png")
+```
