@@ -55,7 +55,7 @@ details <- details %>%
          
 #quick count of games per category
 count <- details %>% count(cat_1)
-```r
+```
 
 There were over 80 categories, many containing hundreds of different games!
 
@@ -87,7 +87,7 @@ ggplot(data = grouped, aes(x= reorder(category, avg_rating), y = avg_rating)) + 
   labs(title= "Top 20 board game categories by average rating", y= "average rating",x ="category") +
   theme_classic() #introduces a theme to the figure instead of the standard output
 ggsave("top.png")
-```r
+```
 
 I then wanted to look at the data by number of new games created in the top 10 categories each year. Interestingly, there are many board games created in categories that aren't the highest rated. Lots of card games are created each year, but this is not at top rated category. 
 
