@@ -1,12 +1,12 @@
 ---
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
-title: "2022 02 02 Board Games Tidytuesday"
+title: "Board Games TidyTuesday"
 subtitle: ""
 summary: ""
 authors: []
 projects: []
-tags: []
+tags: ["tidytuesday"]
 categories: []
 date: 2022-02-02T19:04:48-05:00
 lastmod: 2022-02-02T19:04:48-05:00
