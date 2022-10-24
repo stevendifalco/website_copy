@@ -10,18 +10,18 @@ authors:
 superuser: true
 
 # Role/position
-role: Land Project Coordinator
+role: GIS and Land Data Manger
 
 # Organizations/Affiliations
 organizations:
-- name:  Westchester Land Trust
+- name:  Scenic Hudson
   url: ""
 
 # Short bio (displayed in user profile at end of posts)
 bio: My interests include botany, geography, human dimensions, and landscape ecology.
 
 interests:
-- Map making
+- Cartography
 - Land conservation
 - Spatial analysis
 - Human-environmental interactions  
@@ -73,7 +73,7 @@ email: ""
 #user_groups:
 
 ---
-As the Land Project Coordinator at Westchester Land Trust, I assist with conservation easements and land donation projects. I recently completed my master’s degree in Natural Resources at the University of Connecticut, where I studied the human dimensions of exurban utility vegetation management. My research project involved a mail survey to residents of Connecticut, to assess public perceptions and opinions towards tree management. I integrated spatial analysis techniques to evaluate how attitudes vary across the landscape at different scales. 
+As the GIS and Land Data Manager at Scenic Hudson, I administer GIS and Salesforce-based land records. I assist our 35 users on using ArcGIS products for all carotgraphic and field data colleciton needs. I completed my master’s degree in Natural Resources at the University of Connecticut, where I studied the human dimensions of exurban utility vegetation management. My research project involved a mail survey to residents of Connecticut, to assess public perceptions and opinions towards tree management. I integrated spatial analysis techniques to evaluate how attitudes vary across the landscape at different scales. 
 
 For five years, I worked as a natural resource specialist to restore native ecosystems through invasive plant management. I focused on restoring forests and fields to their native composition, by collecting and propagating native plants to establish a diverse assemblage of species. I am interested in the way exotic invasive species affect local ecosystems, and best management practices to mitigate the impacts of invasive species. Restoring and maintaining native plant populations is important for helping provide habitat for our native pollinators, which are an overlooked aspect of our ecosystem. 
 

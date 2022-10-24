@@ -18,17 +18,31 @@ date_format = "Jan 2006"
 #   Leave `date_end` empty if it's your current employer.
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 [[experience]]
+  title = "GIS and Land Data Manager"
+  company = "Scenic Hudson"
+  company_url = ""
+  location = "Poughkeepsie, NY"
+  date_start = "2022-03-20"
+  date_end = ""
+  description = """
+  Responsibilities include:
+  * Mapping and completing analysis for various land protection projects including impacts of development proposals on scenic,agricultural, urban and ecological resources
+  * Maintaining all spatial and tabular data related to landconservation, land use, natural and cultural resources, trails and other recreational features
+  * Organizing trainings, mentoring and technical assistance to GIS and Salesforce users within the organization
+  """
+
+[[experience]]
   title = "Land Projects Coordinator"
   company = "Westchester Land Trust"
   company_url = ""
   location = "Bedford, NY"
   date_start = "2020-08-01"
-  date_end = ""
+  date_end = "2022-03-01"
   description = """
   Responsibilities include:
-  * Assist with the identification and management of land acquisition and conservation projects
-  * Updating organization Strategic Conservation Plan including data collection and spatial analysis modeling for priority conservation projects
-  * Supporting the stewardship department with conservation easement monitoring and preserve management activities
+  * Assisted with the identification and management of land conservation projects
+  * Updated organization strategic conservation plan including data collection and spatial analysis modeling for priority conservation projects
+  * Supported the stewardship department with conservation easement monitoring and preserve management activities
   """
 
 [[experience]]
