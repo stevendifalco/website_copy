@@ -36,6 +36,6 @@ url_video: ""
 
 ### This interactive map application allows the user to select different attributes (such as trails) to find out more information and directions to the location. This project was done in collaboration with Joshua's Trust and the town of Mansfield, CT. Pulling together town, state, and land trust trails to one place and provide useful information for those who would like to recreate in the Mansfield, CT. Created using ArcGIS Online.
 
-### The map is available [https://arcg.is/00P94P](here) on the Town of Mansfield Parks and Recreation page. The screen capture below shows how a user can find out information by clicking on a trail or parking area for detailed information about the open space.
+### The map is available [here](https://arcg.is/00P94P) on the Town of Mansfield Parks and Recreation page. The screen capture below shows how a user can find out information by clicking on a trail or parking area for detailed information about the open space.
 
 ![](ScreenShot.png)
