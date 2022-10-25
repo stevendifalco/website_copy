@@ -77,7 +77,8 @@ a = ggplot(plot_df, aes(x=max_cal, y=caffeine_mg))+
 interactive = ggplotly(a)
 
 #save as html to view widget
-saveWidget(interactive, "plotly.html", ,selfcontained = F)
+saveWidget(interactive, "plotly.html", ,selfcontained = F, libdir = "lib")
+htmlwidgets::saveWidget(interactive, "plotly2.html")
 
 ```
 
