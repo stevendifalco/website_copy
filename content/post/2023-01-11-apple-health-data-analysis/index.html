@@ -1,0 +1,159 @@
+---
+title: Analysis of Apple Health Data using TidyVerse
+author: Steven DiFalco
+date: '2023-01-11'
+slug: apple-health-data-analysis
+categories: [data visualizations, Apple Health Data]
+tags: [data visualizations, Apple Health Data, TidyVerse, GridPlot]
+subtitle: ''
+summary: ''
+authors: [Steven DiFalco]
+projects: [Other Projects]
+lastmod: '2023-01-11T20:45:14-05:00'
+featured: no
+draft: no
+disable_jquery: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+---
+
+
+
+<div id="i-have-always-been-very-interested-in-keeping-track-of-my-workout-activities-especially-since-i-got-an-apple-watch.-this-has-really-propelled-me-to-become-very-obsessed-with-tracking-nearly-all-my-walks-and-hikes.-its-really-fascinating-to-see-over-the-past-three-years-how-often-i-would-achieve-my-daily-activity-goals.-there-are-also-some-big-gaps-in-the-data-when-i-often-did-not-wear-my-watch-and-was-not-as-active." class="section level4">
+<h4>I have always been very interested in keeping track of my workout activities, especially since I got an Apple Watch. This has really propelled me to become very obsessed with tracking nearly all my walks and hikes. It’s really fascinating to see over the past three years how often I would achieve my daily activity goals. There are also some big gaps in the data when I often did not wear my watch and was not as active.</h4>
+</div>
+<div id="in-january-2022-i-adopted-a-dog.-this-started-a-daily-habit-of-daily-or-twice-daily-walkshikes-the-perfect-things-to-record.-i-also-joined-a-gym-in-april-2022-again-another-time-for-data-collection.-the-apple-health-data-has-a-ton-of-records-to-parse-through.-in-the-record-category-i-had-over-1000000-rows-of-data-going-back-to-2015--i-decided-to-not-explore-that-data-just-yet.-for-this-post-i-focused-on-workout-records-including-the-exercise-move-and-stand-daily-goals." class="section level4">
+<h4>In January 2022, I adopted a dog. This started a daily habit of daily or twice-daily walks/hikes; the perfect things to record. I also joined a gym in April 2022, again another time for data collection. The Apple Health data has a TON of records to parse through. In the <code>record</code> category, I had over 1,000,000 rows of data going back to 2015- I decided to not explore that data just yet. For this post, I focused on <code>workout</code> records including the Exercise, Move, and Stand daily goals.</h4>
+</div>
+<div id="the-result-of-the-code-below-is-this-figure.-clearly-2022-was-a-much-more-successful-year-according-to-my-watch-activity-records-with-2020-second-and-2021-third.-ill-be-posting-more-from-this-dataset-overtime." class="section level4">
+<h4>The result of the code below is this figure. Clearly, 2022 was a much more successful year according to my watch activity records with 2020 second and 2021 third. I’ll be posting more from this dataset overtime.</h4>
+<p><img src="Featured.png" /></p>
+</div>
+<div id="this-data-set-is-my-personal-apple-health-data-from-the-past-3-years.-for-how-to-download-your-data-see-taras-kaduks-post-which-is-also-where-much-of-this-code-was-sourced-from." class="section level4">
+<h4>This data set is my personal Apple Health Data from the past 3 years. For how to download your data see <a href="https://taraskaduk.com/posts/2019-03-23-apple-health/">Taras Kaduk’s Post</a>, which is also where much of this code was sourced from.</h4>
+<pre class="r"><code>#libraries
+library(XML)
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(ggthemes)
+library(ggpubr)
+
+#xml object containing data
+xml &lt;- xmlParse(file = &quot;apple_health_export/export.xml&quot;)
+
+#set up dataframes for types of data
+df_record &lt;-XML:::xmlAttrsToDataFrame(xml[&quot;//Record&quot;])
+df_activity &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//ActivitySummary&quot;])
+df_workout &lt;-  XML:::xmlAttrsToDataFrame(xml[&quot;//Workout&quot;])
+df_workoutstats &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//WorkoutStatistics&quot;])
+
+#Separate out dateComponent into year, month, day. Easier to group category and set up boolean. 
+df_activity_cleaned&lt;-df_activity %&gt;% 
+  mutate(date = as.Date(dateComponents)) %&gt;%
+  select(-dateComponents) %&gt;%
+  select(-activeEnergyBurnedUnit) %&gt;% 
+  mutate_if(is.character, as.numeric) %&gt;% 
+  rename(move = activeEnergyBurned,
+         exercise = appleExerciseTime,
+         stand = appleStandHours,
+         move_goal = activeEnergyBurnedGoal,
+         exercise_goal = appleExerciseTimeGoal,
+         stand_goal = appleStandHoursGoal) %&gt;%
+  mutate(year = lubridate::year(date),
+         month = month(date),
+         day = day(date),
+         wday = wday(date),
+         move_pct = move/move_goal,
+         exercise_pct = exercise/exercise_goal,
+         stand_pct = stand/stand_goal,
+         move_bool = if_else(move_pct &lt; 1, FALSE, TRUE),
+         exercise_bool = if_else(exercise_pct &lt; 1, FALSE, TRUE),
+         stand_bool = if_else(stand_pct &lt; 1, FALSE, TRUE))
+  
+#pivots data, arranges by category, and adds boolean record
+df_activity_tall_bool &lt;- df_activity_cleaned %&gt;% 
+    select(date, Move = move_bool, Exercise = exercise_bool, Stand = stand_bool) %&gt;% 
+    gather(category, boolean, -date)
+
+#resets date fields and adds a week category for organizing plots
+df_activity_tall &lt;- df_activity_tall_bool %&gt;% 
+    left_join(df_activity_tall_bool, by = c(&quot;date&quot;, &quot;category&quot;)) %&gt;% 
+    mutate(month = ymd(paste(year(date), month(date), 1, sep = &quot;-&quot;)),
+           year = year(date),
+           week = date - wday(date) + 1,
+           wday = wday(date),
+           day = day(date)) %&gt;%
+    filter(year %in% c(&quot;2020&quot;,&quot;2021&quot;,&quot;2022&quot;))</code></pre>
+<pre class="r"><code>#Plot set up - filter each year and create plot per year. Not sure how to facet this.
+df_2020 &lt;- df_activity_tall %&gt;%
+  filter(year == 2020)
+
+A2020 &lt;- df_2020 %&gt;% 
+  ggplot(aes(x = wday, y = week, fill= boolean.x)) +
+  geom_tile(col = &quot;grey30&quot;, na.rm = FALSE) +
+  theme(panel.grid.major = element_blank()) +
+  scale_fill_manual(values = c(&quot;grey80&quot;, &quot;#1a9641&quot;)) +
+  facet_wrap(~ category)+
+  coord_fixed(ratio = 0.15) +
+  guides(fill=&quot;none&quot;) +
+  ggtitle(&quot;2020&quot;) +
+  xlab(&quot;&quot;)+
+  ylab(&quot;&quot;)+
+  theme_minimal()+
+  theme(axis.text.x = element_blank())+
+  theme(plot.title = element_text(hjust = 0.5))
+
+df_2021 &lt;- df_activity_tall %&gt;%
+  filter(year == 2021)%&gt;%
+  arrange(date)
+
+A2021 &lt;- df_2021 %&gt;%
+  ggplot(aes(x = wday, y = week, fill= boolean.x)) +
+  geom_tile(col = &quot;grey30&quot;, na.rm = FALSE) +
+  theme(panel.grid.major = element_blank()) +
+  scale_fill_manual(values = c(&quot;grey80&quot;, &quot;#1a9641&quot;)) +
+  facet_wrap(~ category)+
+  coord_fixed(ratio = 0.15) +
+  guides(fill=&quot;none&quot;) +
+  ggtitle(&quot;2021&quot;) +
+  xlab(&quot;&quot;)+
+  ylab(&quot;&quot;)+
+  theme_minimal()+
+  theme(axis.text.x = element_blank())+
+  theme(plot.title = element_text(hjust = 0.5))
+
+df_2022 &lt;- df_activity_tall %&gt;%
+  filter(year == 2022)%&gt;%
+  arrange(desc(date))
+
+A2022 &lt;- df_2022 %&gt;% 
+  ggplot(aes(x = wday, y = week, fill= boolean.x)) +
+  geom_tile(col = &quot;grey30&quot;, na.rm = FALSE) +
+  theme(panel.grid.major = element_blank()) +
+  scale_fill_manual(values = c(&quot;grey80&quot;, &quot;#1a9641&quot;)) + #, labs(&quot;Achieved&quot;)) +
+  facet_wrap(vars(category), labeller = )+
+  coord_fixed(ratio = 0.15) +
+  guides(fill=&quot;none&quot;) + #first include the labels above first then turn off guides
+  ggtitle(&quot;2022&quot;) +
+  xlab(&quot;&quot;)+
+  ylab(&quot;&quot;)+
+  theme_cowplot()+
+  theme(axis.text.x = element_blank())+
+  theme(plot.title = element_text(hjust = 0.5))
+
+#get legend from plot- have to include first then do extract
+my_legend &lt;- get_legend(A2022)
+legend &lt;- as_ggplot(my_legend)
+
+#Arrange output for export
+arrangedPlots &lt;- ggarrange(A2020, A2021, A2022,
+                    ncol = 3)
+
+annotate_figure(arrangedPlots, top = text_grob(&quot;Apple Watch Activity Goals&quot;, color=&quot;black&quot;, face = &quot;bold&quot;, size = 14),
+                bottom = text_grob(&quot;No Box = watch not worn. Created by @stevendifalco with code borrowed from @taraskaduk&quot;, color=&quot;black&quot;,size=10))
+
+ggsave(&quot;legned.png&quot;,legend, width=1, height=1)</code></pre>
+</div>

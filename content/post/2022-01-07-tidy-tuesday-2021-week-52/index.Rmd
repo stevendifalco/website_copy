@@ -33,7 +33,7 @@ authors: []
 
 [interactive figure](plotly.html)
 
-![](feature.png)
+![](featured.png)
 
 #### code below:
 ```{r eval=FALSE}
