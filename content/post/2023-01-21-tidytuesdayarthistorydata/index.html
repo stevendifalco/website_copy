@@ -1,0 +1,126 @@
+---
+title: TidyTuesdayArtHistoryData
+author: Steven DiFalco
+date: '2023-01-21'
+slug: tidytuesdayarthistorydata
+categories: [data visualizations, TidyTUesday]
+tags: [data visualizations, TidyTuesday, TidyVerse, ggwaffle, ggstream]
+subtitle: ''
+summary: ''
+authors: [Steven DiFalco]
+projects: [Other Projects]
+lastmod: "2023-01-21T13:20:23-05:00"
+featured: no
+draft: no
+disable_jquery: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+---
+
+
+
+<div id="using-the-tidytuesday-art-history-data-ive-created-two-plots.-one-is-a-ggstream-plot-organized-by-artist_race-in-the-dataset." class="section level4">
+<h4>Using the TidyTuesday Art History Data, I’ve created two plots. One is a <code>ggstream</code> plot organized by artist_race in the dataset.</h4>
+<p><img src="ArtbyRace.png" />{width = 100%}</p>
+</div>
+<div id="the-seocnd-is-using-ggwaffle-organized-by-country.-for-the-second-i-recategorized-the-artist_nationaltity-field-to-country-thinking-i-could-get-flags-to-represent-the-boxes-in-the-plot-but-this-did-not-pan-out.-either-way-quite-happy-with-the-way-these-figures-turned-out.-this-is-the-featured-image-above." class="section level4">
+<h4>The seocnd is using <code>ggwaffle</code> organized by country. For the second, I recategorized the artist_nationaltity field to country, thinking I could get flags to represent the boxes in the plot, but this did not pan out. Either way, quite happy with the way these figures turned out. This is the featured image above.</h4>
+<pre class="r"><code># TidyTuesday 2023- Week 3: Art History
+
+library(tidytuesdayR)
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(ggstream)
+library(glue)
+library(ggwaffle)
+
+artists &lt;- readr::read_csv(&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-01-17/artists.csv&#39;)
+
+#Group data by year and count artists by nationality in each edition
+arthistory_summed &lt;- artists %&gt;%
+  filter(book == &quot;Gardner&quot;)%&gt;%
+  filter(artist_nationality != &quot;N/A&quot;) %&gt;%
+  separate(col= artist_nationality, into = c(&quot;nationality1&quot;, &quot;nationality2&quot;), sep = &quot;-&quot;) %&gt;%
+  group_by(year) %&gt;%
+  count(nationality1) %&gt;%
+  arrange(year, desc(n), nationality1)
+
+ggplot(arthistory_summed, aes(x=year, y=n, fill=nationality1)) +
+  geom_stream()
+
+#group artists by race and count
+arthistory_byRaceCount &lt;- artists %&gt;%
+  filter(artist_race != &quot;N/A&quot;,
+         book == &quot;Gardner&quot;) %&gt;%
+  select(year, book, space_ratio_per_page_total, artist_race) %&gt;%
+  group_by(year,book, artist_race) %&gt;%
+  count(artist_race)
+
+#plot for Gardner book only.
+ByRace &lt;- ggplot(arthistory_byRaceCount, aes(x=year, y=n, fill=artist_race)) +
+  geom_stream(type = &quot;ridge&quot;)+
+  #facet_grid(~book)+
+  scale_fill_brewer(palette = &quot;Set1&quot;)+
+  ylab(&quot;Number of artists per edition&quot;)+
+  xlab(&quot;Year of publication&quot;)+
+  labs(title= &quot;Artists by race in Gardner’s Art Through the Ages editions 1926-2020&quot;,
+       subtitle = &quot;TidyTuesday 2023- Week 3: Art History&quot;,
+       caption= &quot;Created by @stevendifalco, data from Lemus S, Stam H (2022). arthistory: Art History Textbook Data&quot;,
+       color = &quot;Artist Race&quot;)+
+  theme_classic()
+
+## Saves the plot
+ggsave(&quot;ArtbyRace.png&quot;, plot = ByRace)
+
+
+#waffle plot
+# mutate date so that country is reassigned for top countries
+artists_byArtists &lt;- artists %&gt;%
+  filter(book == &quot;Gardner&quot;)%&gt;%
+  filter(artist_nationality != &quot;N/A&quot;) %&gt;%
+  separate(col= artist_nationality, into = c(&quot;nationality1&quot;, &quot;nationality2&quot;), sep = &quot;-&quot;) %&gt;%
+  group_by(artist_name, nationality1)%&gt;%
+  count(artist_name) %&gt;%
+  mutate(country = nationality1) %&gt;%
+  mutate(country = case_when(country == &quot;American&quot; ~ &quot;usa&quot;,
+                             country == &quot;French&quot; ~ &quot;france&quot;,
+                             country == &quot;German&quot; ~ &quot;germany&quot;,
+                             #country == &quot;Indian&quot; ~ &quot;india&quot;,
+                             country == &quot;Italian&quot; ~ &quot;italy&quot;,
+                             country == &quot;Japanese&quot; ~ &quot;japan&quot;,
+                             country == &quot;British&quot; ~ &quot;uk&quot;,
+                             country == &quot;Swiss&quot; ~ &quot;switzerland&quot;,
+                             #country == &quot;Spanish&quot; ~ &quot;spain&quot;,
+                             TRUE ~ &quot;other&quot;)) %&gt;%
+  mutate(flag = tolower(country),
+                #flag = stringr::str_remove_all(flag, &quot;[:punct:]&quot;),
+                flag = glue::glue(&quot;2023-1-17/icons/{flag}.png&quot;))%&gt;%
+  arrange(desc(n))
+
+#waffle data for plot
+waffle_data &lt;- waffle_iron(artists_byArtists, aes_d(group = country),rows=10) %&gt;%
+  mutate(country=group)
+
+#ggplot with waffle data
+
+## Define coordinates for the titles
+Plot &lt;- ggplot(waffle_data, aes(x, y, fill=country))+
+  geom_waffle()+
+  scale_fill_brewer(palette = &quot;Dark2&quot;)+
+  coord_equal()+
+  labs(title= &quot;Artists by Country in Gardner’s Art Through the Ages editions 1926-2020&quot;,
+       subtitle = &quot;TidyTuesday 2023- Week 3: Art History&quot;,
+       caption= &quot;Created by @stevendifalco, data from Lemus S, Stam H (2022). arthistory: Art History Textbook Data&quot;)+
+  theme_void()+
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.border = element_blank(),
+    plot.background = element_rect(fill = &quot;white&quot;))
+
+## Saves the plot
+ggsave(&quot;Featured.png&quot;, plot = Plot)</code></pre>
+</div>
